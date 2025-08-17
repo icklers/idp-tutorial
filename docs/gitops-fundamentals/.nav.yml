@@ -1,0 +1,4 @@
+nav:
+  - 01-argocd-setup.md
+  - 02-crossplane-integration.md
+  - 03-workflow-patterns.md

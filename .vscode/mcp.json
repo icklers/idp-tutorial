@@ -1,0 +1,26 @@
+{
+  "servers": {
+    "memory": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "-v",
+        "/home/user/idp-tutorial/.memory:/data",
+        "-e",
+        "MEMORY_FILE_PATH=/data/memory.json",
+        "--rm",
+        "mcp/memory"
+      ]
+    },
+    "kubernetes": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "mcp/kubernetes"
+      ]
+    }
+  }
+}

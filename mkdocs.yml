@@ -1,0 +1,31 @@
+site_name: Internal Developer Platform Tutorial
+site_description: A comprehensive guide to building an Internal Developer Platform using Crossplane and GitOps principles
+site_author: Sebastiian Ickler
+theme:
+  name: material
+  features:
+    - content.code.copy
+    # - navigation.tabs
+    # - navigation.sections
+    # - navigation.expand
+
+plugins:
+  - awesome-nav
+  - search
+  - mermaid2
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - admonition
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - attr_list # For adding attributes like classes or IDs to markdown elements
+  - md_in_html
+
+

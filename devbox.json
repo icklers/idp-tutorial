@@ -1,0 +1,31 @@
+{
+  "packages": [
+    "argocd@latest",
+    "oh-my-zsh@latest",
+    "zsh@latest",
+    "kubectl@latest",
+    "gh@latest",
+    "uv@latest"
+  ],
+  "shell": {
+    "init_hook": [
+      "[ ! -d .venv ] && uv venv",
+      "source .venv/bin/activate",
+      "export UV_LINK_MODE=copy",
+      "echo 'Welcome to the GitOps Tutorial Dev Environment!'"
+    ],
+    "scripts": { 
+      "setup-tools": [
+        "mkdir -p ~/bin/",
+        "uv pip install -r pyproject.toml",
+        "[ ! -e ~/bin/crossplane ] && curl -sL \"https://raw.githubusercontent.com/crossplane/crossplane/main/install.sh\" | sh > /dev/null",
+        "mv crossplane ~/bin/ && chmod +x ~/bin/crossplane",
+        "[ ! -e ~/bin/argocd ] && curl -sSL -o argocd-linux-amd64 https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64 && mv argocd-linux-amd64 ~/bin/argocd && chmod +x ~/bin/argocd",
+        "echo 'export PATH=~/bin:$PATH' >> ~/.profile",
+        "source ~/.profile",
+        "echo \"Crossplane:\" $(crossplane version --client)",
+        "echo $(argocd version --client | head -1)"
+      ]
+    }
+  }
+}

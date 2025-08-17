@@ -1,0 +1,4 @@
+nav:
+  - 01-chainguard-images.md
+  - 02-secret-management.md
+  - 03-rbac.md
