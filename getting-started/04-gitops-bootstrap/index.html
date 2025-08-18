@@ -1,0 +1,786 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A comprehensive guide to building an Internal Developer Platform using Crossplane and GitOps principles">
+      
+      
+        <meta name="author" content="Sebastiian Ickler">
+      
+      
+      
+        <link rel="prev" href="../03-local-cluster-setup/">
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.17">
+    
+    
+      
+        <title>04: GitOps Bootstrap with ArgoCD - Internal Developer Platform Tutorial</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.7e37652d.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#04-gitops-bootstrap-with-argocd" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Internal Developer Platform Tutorial" class="md-header__button md-logo" aria-label="Internal Developer Platform Tutorial" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Internal Developer Platform Tutorial
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              04: GitOps Bootstrap with ArgoCD
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Internal Developer Platform Tutorial" class="md-nav__button md-logo" aria-label="Internal Developer Platform Tutorial" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Internal Developer Platform Tutorial
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Introduction
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Getting Started
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Getting Started
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-introduction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    01: Introduction to the GitOps Workflow
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-devbox-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    02: Nix &amp; Devbox Setup
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-local-cluster-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    03: Local Cluster Setup
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    04: GitOps Bootstrap with ArgoCD
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    04: GitOps Bootstrap with ArgoCD
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-gitops-bootstrap-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      The GitOps Bootstrap Process
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The GitOps Bootstrap Process">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-create-your-platform-gitops-repository" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Create Your Platform GitOps Repository
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Create Your Platform GitOps Repository">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-prepare-your-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.1 Prepare your environment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-clone-this-tutorial-repository-to-your-local-machine" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.2 Clone this tutorial repository to your local machine
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-create-the-github-repository" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.3 Create the GitHub repository
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-prepare-the-platform-coreyaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Prepare the platform-core.yaml
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-apply-the-bootstrap-manifests" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Apply the Bootstrap Manifests
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-register-your-gitops-repository-with-argocd" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Register Your GitOps Repository with ArgoCD
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-observe-the-magic" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Observe the Magic
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#congratulations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Congratulations!
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-gitops-bootstrap-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      The GitOps Bootstrap Process
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The GitOps Bootstrap Process">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-create-your-platform-gitops-repository" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Create Your Platform GitOps Repository
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Create Your Platform GitOps Repository">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-prepare-your-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.1 Prepare your environment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-clone-this-tutorial-repository-to-your-local-machine" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.2 Clone this tutorial repository to your local machine
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-create-the-github-repository" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.3 Create the GitHub repository
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-prepare-the-platform-coreyaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Prepare the platform-core.yaml
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-apply-the-bootstrap-manifests" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Apply the Bootstrap Manifests
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-register-your-gitops-repository-with-argocd" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Register Your GitOps Repository with ArgoCD
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-observe-the-magic" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Observe the Magic
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#congratulations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Congratulations!
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="04-gitops-bootstrap-with-argocd">04: GitOps Bootstrap with ArgoCD<a class="headerlink" href="#04-gitops-bootstrap-with-argocd" title="Permanent link">&para;</a></h1>
+<p>Now that we have a blank Kubernetes cluster, we will kick off our entire platform using a single command. This is the essence of a true GitOps workflow.</p>
+<h2 id="the-gitops-bootstrap-process">The GitOps Bootstrap Process<a class="headerlink" href="#the-gitops-bootstrap-process" title="Permanent link">&para;</a></h2>
+<p>We will apply a single file to our cluster: <code>gitops-bootstrap/argocd/install.yaml</code>. This manifest contains the Custom Resource Definitions for ArgoCD.</p>
+<p>Immediately after, we will apply our <code>platform-core.yaml</code>. This special <code>ApplicationSet</code> resource instructs ArgoCD to manage its own configuration and all other platform components from our Git repository.</p>
+<h3 id="1-create-your-platform-gitops-repository">1. Create Your Platform GitOps Repository<a class="headerlink" href="#1-create-your-platform-gitops-repository" title="Permanent link">&para;</a></h3>
+<p>This tutorial provides the content for your "Platform GitOps Repo". You will create a new GitHub repository and push this content to it.</p>
+<h4 id="11-prepare-your-environment">1.1 Prepare your environment<a class="headerlink" href="#11-prepare-your-environment" title="Permanent link">&para;</a></h4>
+<p>First, set your GitHub username as an environment variable. This is used to authenticate with the repository when ArgoCD pulls the manifests.</p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">GITHUB_USERNAME</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="w"> </span><span class="c1"># Replace with your GitHub username</span>
+</code></pre></div>
+<p>Next set a name for your Platform GitOps repository. This is the repository you just created.</p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">GITHUB_REPO_NAME</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="w"> </span><span class="c1"># Replace with your Platform GitOps repository name</span>
+</code></pre></div>
+<p>Next, set an environment variable with your Platform GitOps repository URL:</p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">PLATFORM_GITOPS_REPO_URL</span><span class="o">=</span><span class="s2">&quot;https://github.com/</span><span class="nv">$GITHUB_USERNAME</span><span class="s2">/</span><span class="nv">$GITHUB_REPO_NAME</span><span class="s2">.git&quot;</span><span class="w"> </span><span class="c1"># Replace with your actual Platform GitOps repository URL</span>
+</code></pre></div>
+<p>Validate the environment variables:</p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;GITHUB_USERNAME: </span><span class="nv">$GITHUB_USERNAME</span><span class="s2">&quot;</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;GITHUB_REPO_NAME: </span><span class="nv">$GITHUB_REPO_NAME</span><span class="s2">&quot;</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;PLATFORM_GITOPS_REPO_URL: </span><span class="nv">$PLATFORM_GITOPS_REPO_URL</span><span class="s2">&quot;</span>
+</code></pre></div>
+<p>If the output looks correct, you are ready to proceed.</p>
+<h4 id="12-clone-this-tutorial-repository-to-your-local-machine">1.2 Clone this tutorial repository to your local machine<a class="headerlink" href="#12-clone-this-tutorial-repository-to-your-local-machine" title="Permanent link">&para;</a></h4>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>gh<span class="w"> </span>clone<span class="w"> </span>icklers/idp-tutorial
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nb">cd</span><span class="w"> </span>idp-tutorial
+</code></pre></div>
+<h4 id="13-create-the-github-repository">1.3 Create the GitHub repository<a class="headerlink" href="#13-create-the-github-repository" title="Permanent link">&para;</a></h4>
+<p>Create your new Platform GitOps Repo on GitHub and push the content. This command will create a new private repository on GitHub push the current directory's content to it, and set it as the <code>origin</code> remote.</p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>gh<span class="w"> </span>repo<span class="w"> </span>create<span class="w"> </span><span class="nv">$GITHUB_USERNAME</span>/<span class="nv">$GITHUB_REPO_NAME</span><span class="w"> </span>--public<span class="w"> </span>--source<span class="w"> </span>.<span class="w"> </span>--remote<span class="w"> </span>origin
+</code></pre></div>
+<p>This repository will now be your source of truth for all GitOps configurations.</p>
+<blockquote>
+<p>If you want to create a private repository, refer to the ArgoCD Documentation about <a href="https://argo-cd.readthedocs.io/en/stable/user-guide/private-repositories/#github-app-credential">Private Repositories in GitHub</a></p>
+</blockquote>
+<h3 id="2-prepare-the-platform-coreyaml">2. Prepare the <code>platform-core.yaml</code><a class="headerlink" href="#2-prepare-the-platform-coreyaml" title="Permanent link">&para;</a></h3>
+<p>The <code>platform-core.yaml</code> manifest needs to point to your Platform GitOps repository. We will use a simple <code>sed</code> command to replace the placeholder with your repository URL.</p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>sed<span class="w"> </span>-i<span class="w"> </span><span class="s2">&quot;s|__YOUR_PLATFORM_GITOPS_REPO_URL__|</span><span class="nv">$PLATFORM_GITOPS_REPO_URL</span><span class="s2">|g&quot;</span><span class="w"> </span>gitops-bootstrap/argocd/platform-core.yaml
+</code></pre></div>
+<blockquote>
+<p><strong>Note on ApplicationSet Path:</strong> Ensure that the <code>path</code> in the <code>platform-core.yaml</code>'s Git generator is set to <code>platform-core</code> if your <code>crossplane.yaml</code> is directly within that directory in your Git repository. If you intend to have subdirectories within <code>platform-core</code> for different applications, then the path should be <code>platform-core/*</code>.</p>
+</blockquote>
+<h3 id="3-apply-the-bootstrap-manifests">3. Apply the Bootstrap Manifests<a class="headerlink" href="#3-apply-the-bootstrap-manifests" title="Permanent link">&para;</a></h3>
+<p>This is the <strong>only manual <code>kubectl apply</code></strong> we will perform. First, we create the namespace for ArgoCD. Then, we apply the official installation manifest directly from the ArgoCD project's GitHub repository. This is the recommended way to ensure you are installing a stable and complete version of ArgoCD.</p>
+<p>Finally, we apply our <code>platform-core.yaml</code> to tell our new ArgoCD instance to start managing our platform from Git.</p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># Create the namespace for ArgoCD</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>kubectl<span class="w"> </span>create<span class="w"> </span>namespace<span class="w"> </span>argocd
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="c1"># Apply the official ArgoCD installation manifest</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-n<span class="w"> </span>argocd<span class="w"> </span>-f<span class="w"> </span>https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="c1"># Apply the Platform Core ApplicationSet to start the GitOps sync</span>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>gitops-bootstrap/argocd/platform-core.yaml
+</code></pre></div>
+<h3 id="4-register-your-gitops-repository-with-argocd">4. Register Your GitOps Repository with ArgoCD<a class="headerlink" href="#4-register-your-gitops-repository-with-argocd" title="Permanent link">&para;</a></h3>
+<p>ArgoCD needs to know about your GitOps repository to pull manifests from it. Before adding the repository, you need to log in to the ArgoCD server using the <code>argocd</code> CLI. You will use the admin password you retrieved earlier.</p>
+<p>First, retrieve the initial admin password for ArgoCD:</p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">ARGOCD_ADMIN_PASSWORD</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>-n<span class="w"> </span>argocd<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>argocd-initial-admin-secret<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s2">&quot;{.data.password}&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>-d<span class="k">)</span>
+</code></pre></div>
+<p>Now, log in to the ArgoCD server using the <code>argocd</code> CLI.:</p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>argocd<span class="w"> </span>login<span class="w"> </span>localhost:8080<span class="w"> </span>--username<span class="w"> </span>admin<span class="w"> </span>--password<span class="w"> </span><span class="nv">$ARGOCD_ADMIN_PASSWORD</span>
+</code></pre></div>
+<blockquote>
+<p>You will see a warning about insecure connections:"</p>
+<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>WARNING: server certificate had error: tls: failed to verify certificate: x509: certificate signed by unknown authority. Proceed insecurely (y/n)?
+</code></pre></div>
+<p>This is expected since we are using port-forwarding and did not set up TLS. You can safely ignore this warning for local development.</p>
+</blockquote>
+<p>Once logged in, you will need a GitHub Personal Access Token (PAT) with <code>repo</code> scope to allow ArgoCD to access your repository.</p>
+<p>Follow the prompts in your browser to complete the authentication. Once authenticated, you can close the browser tab. The <code>gh</code> CLI will store the PAT securely. Use the <code>argocd repo add</code> command to register your repository. We will use the <code>gh auth token</code> command to securely retrieve your PAT.</p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>argocd<span class="w"> </span>repo<span class="w"> </span>add<span class="w"> </span><span class="nv">$PLATFORM_GITOPS_REPO_URL</span><span class="w"> </span>--username<span class="w"> </span><span class="nv">$GITHUB_USERNAME</span><span class="w"> </span>--password<span class="w"> </span><span class="k">$(</span>gh<span class="w"> </span>auth<span class="w"> </span>token<span class="k">)</span>
+</code></pre></div>
+<blockquote>
+<p>If you encounter an authentication error, create a new <strong>GitHub Personal Access Token (classic)</strong> with <code>repo</code> scope in your <a href="https://github.com/settings/tokens">GitHub settings</a>. Set an expiration date for the token, copy it, and use it like this:</p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">GITHUB_PAT</span><span class="o">=</span><span class="s2">&quot;your-personal-access-token&quot;</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>argocd<span class="w"> </span>repo<span class="w"> </span>add<span class="w"> </span><span class="nv">$PLATFORM_GITOPS_REPO_URL</span><span class="w"> </span>--username<span class="w"> </span><span class="nv">$GITHUB_USERNAME</span><span class="w"> </span>--password<span class="w"> </span><span class="nv">$GITHUB_PAT</span>
+</code></pre></div>
+</blockquote>
+<h3 id="5-observe-the-magic">5. Observe the Magic<a class="headerlink" href="#5-observe-the-magic" title="Permanent link">&para;</a></h3>
+<p>ArgoCD is now installing and configuring itself, Crossplane, and all the providers and compositions defined in your Git repository. To watch this happen, access the ArgoCD UI.</p>
+<p>Then, port-forward the ArgoCD server:</p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>kubectl<span class="w"> </span>port-forward<span class="w"> </span>svc/argocd-server<span class="w"> </span>-n<span class="w"> </span>argocd<span class="w"> </span><span class="m">8080</span>:443
+</code></pre></div>
+<p>Echo the admin password for convenience, to use it when logging into the ArgoCD WebUI:</p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;ArgoCD Admin Password: </span><span class="nv">$ARGOCD_ADMIN_PASSWORD</span><span class="s2">&quot;</span>
+</code></pre></div>
+<p>Log in to <a href="https://localhost:8080"><code>https://localhost:8080</code></a> with username <code>admin</code> and the retrieved password. You will see the <code>platform-core</code> and all the other applications syncing automatically.</p>
+<h2 id="congratulations">Congratulations!<a class="headerlink" href="#congratulations" title="Permanent link">&para;</a></h2>
+<p>You have successfully bootstrapped a fully functional GitOps workflow. From this point forward, we will interact with our system exclusively through Git.</p>
+<p><strong>➡️ <a href="../../repository-management/01-multi-repo-strategy/">Next Section: Repository Management</a></strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.92b07e13.min.js"></script>
+      
+    
+  </body>
+</html>
