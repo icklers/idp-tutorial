@@ -1,8 +1,8 @@
 nav:
   - 'Introduction': 'index.md'
   - 'Getting Started': 'getting-started/'
-  # - 'Repository Management': 'repository-management/'
-  # - 'GitOps Fundamentals': 'gitops-fundamentals/'
+  - 'Repository Management': 'repository-management/'
+  - 'GitOps Fundamentals': 'gitops-fundamentals/'
   # - 'Providers': 'providers/'
   # - 'Security': 'security/'
   # - 'Observability': 'observability/'
