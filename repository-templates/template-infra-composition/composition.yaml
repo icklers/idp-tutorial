@@ -1,0 +1,15 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: example-composition
+spec:
+  compositeTypeRef:
+    apiVersion: example.crossplane.io/v1alpha1
+    kind: XExample
+  resources:
+  - name: example-resource
+    base:
+      apiVersion: v1
+      kind: ConfigMap
+      metadata:
+        name: example-configmap

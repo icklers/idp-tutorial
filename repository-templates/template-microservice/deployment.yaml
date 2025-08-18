@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: example-microservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: example-microservice
+  template:
+    metadata:
+      labels:
+        app: example-microservice
+    spec:
+      containers:
+      - name: main
+        image: nginx

@@ -1,0 +1,9 @@
+.idea
+
+# Devbox
+
+.devbox
+devbox.lock
+
+# Python
+.venv

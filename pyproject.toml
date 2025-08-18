@@ -1,0 +1,11 @@
+[project]
+name = "idp-tutorial-docs"
+version = "0.1.0"
+dependencies = [
+    "mkdocs",
+    "mkdocs-material",
+    "pymdown-extensions",
+    "mkdocs-mermaid2-plugin",
+    "mkdocs-macros-plugin",
+    "mkdocs-awesome-nav",
+]

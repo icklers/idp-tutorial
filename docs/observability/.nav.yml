@@ -1,0 +1,4 @@
+nav:
+  - 01-health-checks.md
+  - 02-monitoring-with-prometheus.md
+  - 03-alerting.md
