@@ -4,7 +4,9 @@
     "kubectl@latest",
     "gh@latest",
     "uv@latest",
-    "kind@latest"
+    "kind@latest",
+    "kubeseal@latest",
+    "azure-cli@latest"
   ],
   "shell": {
     "init_hook": [

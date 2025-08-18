@@ -170,4 +170,8 @@ Log in to [`https://localhost:8080`](https://localhost:8080) with username `admi
 
 You have successfully bootstrapped a fully functional GitOps workflow. From this point forward, we will interact with our system exclusively through Git.
 
-**➡️ [Next Section: Repository Management](../repository-management/01-multi-repo-strategy.md)**
+## Next Steps
+
+Your GitOps foundation is now ready. Next, we'll add secure secret management capabilities that will be essential for managing cloud credentials and application secrets.
+
+**➡️ [Next Section: Sealed Secrets Setup](05-sealed-secrets-setup.md)**

@@ -3,3 +3,4 @@ nav:
   - 02-devbox-setup.md
   - 03-local-cluster-setup.md
   - 04-gitops-bootstrap.md
+  - 05-sealed-secrets-setup.md
