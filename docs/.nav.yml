@@ -1,12 +1,12 @@
 nav:
   - 'Introduction': 'index.md'
   - 'Getting Started': 'getting-started/'
-  - 'Repository Management': 'repository-management/'
-  - 'GitOps Fundamentals': 'gitops-fundamentals/'
-  - 'Providers': 'providers/'
-  - 'Security': 'security/'
-  - 'Observability': 'observability/'
-  - 'Advanced Topics': 'advanced/'
-  - 'Troubleshooting': 'troubleshooting.md'
+  # - 'Repository Management': 'repository-management/'
+  # - 'GitOps Fundamentals': 'gitops-fundamentals/'
+  # - 'Providers': 'providers/'
+  # - 'Security': 'security/'
+  # - 'Observability': 'observability/'
+  # - 'Advanced Topics': 'advanced/'
+  # - 'Troubleshooting': 'troubleshooting.md'
 
 flatten_single_child_sections: true 
