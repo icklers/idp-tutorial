@@ -1,11 +1,12 @@
 {
   "packages": [
-    "argocd@latest",
-    "oh-my-zsh@latest",
-    "zsh@latest",
+    "git@latest",
     "kubectl@latest",
     "gh@latest",
-    "uv@latest"
+    "uv@latest",
+    "kind@latest",
+    "kubeseal@latest",
+    "azure-cli@latest"
   ],
   "shell": {
     "init_hook": [

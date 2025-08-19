@@ -1,11 +1,12 @@
 nav:
   - 'Introduction': 'index.md'
   - 'Getting Started': 'getting-started/'
-  # - 'Repository Management': 'repository-management/'
-  # - 'GitOps Fundamentals': 'gitops-fundamentals/'
-  # - 'Providers': 'providers/'
+  - 'GitOps Fundamentals': 'gitops-fundamentals/'
+  - 'Crossplane Fundamentals': 'crossplane-fundamentals/'
+  - 'Crossplane Advanced Patterns': 'crossplane-advanced-patterns/'
   # - 'Security': 'security/'
   # - 'Observability': 'observability/'
+  - 'Repository Management': 'repository-management/'
   # - 'Advanced Topics': 'advanced/'
   # - 'Troubleshooting': 'troubleshooting.md'
 

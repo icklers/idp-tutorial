@@ -13,15 +13,28 @@ We need to provide custom health checks for Crossplane resources.
 ```lua
 -- health.lua
 hs = {}
-hs.status = "Healthy"
-hs.message = obj.status.conditions[1].message
-if obj.status.conditions[1].type ~= "Ready" or obj.status.conditions[1].status ~= "True" then
-  hs.status = "Progressing"
+if obj.status ~= nil then
+  if obj.status.conditions ~= nil and #obj.status.conditions > 0 then
+    for i, condition in ipairs(obj.status.conditions) do
+      if condition.type == "Ready" then
+        if condition.status == "True" then
+          hs.status = "Healthy"
+          hs.message = condition.message or "Resource is ready"
+        else
+          hs.status = "Progressing"
+          hs.message = condition.message or "Resource is not ready"
+        end
+        return hs
+      end
+    end
+  end
 end
+hs.status = "Progressing"
+hs.message = "No Ready condition found"
 return hs
 ```
 
-This script tells ArgoCD to look at the `status.conditions` array of a Composition resource. If the condition with `type: Ready` has a `status: "True"`, then the resource is considered `Healthy`.
+This script tells ArgoCD to look at the `status.conditions` array of a Composition resource. It safely iterates through the conditions to find the one with `type: Ready`. If that condition has a `status: "True"`, then the resource is considered `Healthy`. The script handles edge cases where conditions might not exist.
 
 ### How to Apply Health Checks
 

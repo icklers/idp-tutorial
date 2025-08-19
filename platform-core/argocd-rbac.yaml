@@ -1,0 +1,65 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: argocd-crossplane-manager-role
+  labels:
+    app: argocd
+    component: rbac
+rules:
+# Crossplane Package Management
+- apiGroups:
+  - pkg.crossplane.io
+  resources:
+  - providers
+  - configurations
+  - providerrevisions
+  - configurationrevisions
+  verbs: ["*"]
+# Crossplane Core Resources  
+- apiGroups:
+  - apiextensions.crossplane.io
+  resources:
+  - compositions
+  - compositeresourcedefinitions
+  - compositeresources
+  - claims
+  verbs: ["*"]
+# Managed Resources (Cloud Resources)
+- apiGroups:
+  - azure.upbound.io
+  - gcp.upbound.io
+  - aws.upbound.io
+  resources:
+  - "*"
+  verbs: ["*"]
+# Custom Resource Definitions
+- apiGroups:
+  - apiextensions.k8s.io
+  resources:
+  - customresourcedefinitions
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+# Secrets for Provider Credentials
+- apiGroups:
+  - ""
+  resources:
+  - secrets
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: argocd-crossplane-manager-binding
+  labels:
+    app: argocd
+    component: rbac
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: argocd-crossplane-manager-role
+subjects:
+- kind: ServiceAccount
+  name: argocd-application-controller
+  namespace: argocd
+- kind: ServiceAccount
+  name: argocd-server
+  namespace: argocd

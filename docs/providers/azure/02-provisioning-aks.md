@@ -11,18 +11,17 @@ First, we define the API for our new resource. This is the `CompositeResourceDef
 **File: `compositions/azure/aks.yaml`**
 
 ```yaml
-apiVersion: apiextensions.crossplane.io/v1
+apiVersion: apiextensions.crossplane.io/v2  # v2.0 API version
 kind: CompositeResourceDefinition
 metadata:
   name: compositeaksclusters.cluster.example.org
 spec:
+  scope: Namespaced  # v2.0: Namespaced by default
   group: cluster.example.org
   names:
     kind: CompositeAKSCluster
     plural: compositeaksclusters
-  claimNames:
-    kind: AKSCluster
-    plural: aksclusters
+  # Note: claimNames removed - not supported in v2.0 namespaced XRs
   versions:
   - name: v1alpha1
     served: true
@@ -59,7 +58,7 @@ Next, we define the `Composition`. This is where we specify which Azure resource
 
 ```yaml
 ---
-apiVersion: apiextensions.crossplane.io/v1
+apiVersion: apiextensions.crossplane.io/v2  # v2.0 API version
 kind: Composition
 metadata:
   name: aks-cluster.v1alpha1.cluster.example.org
@@ -156,4 +155,4 @@ spec:
 -   A new AKS cluster is successfully provisioned in your Azure subscription.
 -   You can connect to the new cluster using the kubeconfig from the claim's secret.
 
-**➡️ [Next Section: Hetzner Provider](../hetzner/01-setup.md)**
+**➡️ [Next Section: Google Cloud Provider](../google/01-setup.md)**

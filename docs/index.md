@@ -8,7 +8,7 @@ We will move beyond simple examples and dive deep into building a robust, produc
 
 - **Infrastructure as Code (IaC) with Crossplane:** Define, compose, and manage your cloud resources (like Kubernetes clusters, databases, and networking) directly from Kubernetes YAML.
 - **GitOps with ArgoCD:** Use Git as the single source of truth for both your infrastructure and application deployments.
-- **Multi-Cloud Provisioning:** Learn to provision and manage resources across Azure, Hetzner, and Google Cloud Platform (GCP).
+- **Multi-Cloud Provisioning:** Learn to provision and manage resources across Azure and Google Cloud Platform (GCP).
 - **Production-Ready Patterns:** Implement best practices for security, observability, and repository management.
 - **Platform Engineering:** Build a true self-service platform that empowers developers to provision the resources they need, when they need them.
 
