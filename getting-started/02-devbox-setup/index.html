@@ -24,7 +24,7 @@
     
     
       
-        <title>02: Nix & Devbox Setup - Internal Developer Platform Tutorial</title>
+        <title>02: Devbox Setup - Internal Developer Platform Tutorial</title>
       
     
     
@@ -66,7 +66,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#02-nix-devbox-setup" class="md-skip">
+        <a href="#02-devbox-setup" class="md-skip">
           Skip to content
         </a>
       
@@ -102,7 +102,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              02: Nix &amp; Devbox Setup
+              02: Devbox Setup
             
           </span>
         </div>
@@ -297,7 +297,7 @@
   
   
   <span class="md-ellipsis">
-    02: Nix &amp; Devbox Setup
+    02: Devbox Setup
     
   </span>
   
@@ -310,7 +310,7 @@
   
   
   <span class="md-ellipsis">
-    02: Nix &amp; Devbox Setup
+    02: Devbox Setup
     
   </span>
   
@@ -333,15 +333,6 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#what-is-nix" class="md-nav__link">
-    <span class="md-ellipsis">
-      What is Nix?
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#what-is-devbox" class="md-nav__link">
     <span class="md-ellipsis">
       What is Devbox?
@@ -361,36 +352,27 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-install-nix" class="md-nav__link">
+  <a href="#1-install-devbox" class="md-nav__link">
     <span class="md-ellipsis">
-      1. Install Nix
+      1. Install Devbox
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-install-devbox" class="md-nav__link">
+  <a href="#2-activate-the-devbox-shell" class="md-nav__link">
     <span class="md-ellipsis">
-      2. Install Devbox
+      2. Activate the Devbox Shell
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#3-activate-the-devbox-shell" class="md-nav__link">
+  <a href="#3-install-project-tools" class="md-nav__link">
     <span class="md-ellipsis">
-      3. Activate the Devbox Shell
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#4-install-project-tools" class="md-nav__link">
-    <span class="md-ellipsis">
-      4. Install Project Tools
+      3. Install Project Tools
     </span>
   </a>
   
@@ -398,6 +380,15 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting-common-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Troubleshooting Common Issues
+    </span>
+  </a>
   
 </li>
       
@@ -456,6 +447,531 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-sealed-secrets-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    05: Secure Secret Management (Sealed Secrets)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    GitOps Fundamentals
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            GitOps Fundamentals
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../gitops-fundamentals/01-argocd-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    01: ArgoCD Setup for Crossplane
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../gitops-fundamentals/02-crossplane-integration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    02: Crossplane Integration with ArgoCD
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../gitops-fundamentals/03-workflow-patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    03: GitOps Workflow Patterns
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Crossplane Fundamentals
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Crossplane Fundamentals
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../crossplane-fundamentals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Crossplane Fundamentals
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../crossplane-fundamentals/01-azure-provider-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Module 1: Azure Provider Setup
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../crossplane-fundamentals/02-first-managed-resource/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Module 2: Your First Managed Resource
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../crossplane-fundamentals/03-understanding-crossplane/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Module 3: Understanding What Happened
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Crossplane Advanced Patterns
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Crossplane Advanced Patterns
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../crossplane-advanced-patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Crossplane Advanced Patterns
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../crossplane-advanced-patterns/01-your-first-composition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Module 1: Your First Composition
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../crossplane-advanced-patterns/02-networking-composition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Module 2: Networking Composition
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../crossplane-advanced-patterns/03-environment-patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Module 3: Environment Patterns
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Repository Management
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Repository Management
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../repository-management/01-multi-repo-strategy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    01: Multi-Repo Strategy for GitOps
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../repository-management/02-repository-templates/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    02: Repository Templates
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../repository-management/03-cross-repo-coordination/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    03: Cross-Repo Coordination with ArgoCD
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -490,15 +1006,6 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#what-is-nix" class="md-nav__link">
-    <span class="md-ellipsis">
-      What is Nix?
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#what-is-devbox" class="md-nav__link">
     <span class="md-ellipsis">
       What is Devbox?
@@ -518,36 +1025,27 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-install-nix" class="md-nav__link">
+  <a href="#1-install-devbox" class="md-nav__link">
     <span class="md-ellipsis">
-      1. Install Nix
+      1. Install Devbox
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-install-devbox" class="md-nav__link">
+  <a href="#2-activate-the-devbox-shell" class="md-nav__link">
     <span class="md-ellipsis">
-      2. Install Devbox
+      2. Activate the Devbox Shell
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#3-activate-the-devbox-shell" class="md-nav__link">
+  <a href="#3-install-project-tools" class="md-nav__link">
     <span class="md-ellipsis">
-      3. Activate the Devbox Shell
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#4-install-project-tools" class="md-nav__link">
-    <span class="md-ellipsis">
-      4. Install Project Tools
+      3. Install Project Tools
     </span>
   </a>
   
@@ -555,6 +1053,15 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting-common-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Troubleshooting Common Issues
+    </span>
+  </a>
   
 </li>
       
@@ -574,79 +1081,111 @@
 
 
 
-<h1 id="02-nix-devbox-setup">02: Nix &amp; Devbox Setup<a class="headerlink" href="#02-nix-devbox-setup" title="Permanent link">&para;</a></h1>
-<p>Reproducibility is critical for a stable GitOps workflow. We need to ensure that every engineer on the team, as well as our CI/CD pipelines, are using the exact same versions of our command-line tools. We will use Nix and Devbox to achieve this.</p>
-<h2 id="what-is-nix">What is Nix?<a class="headerlink" href="#what-is-nix" title="Permanent link">&para;</a></h2>
-<p>Nix is a powerful package manager for Linux and macOS that makes package management reliable and reproducible. It allows you to create isolated, declarative, and version-pinned development environments.</p>
-<ul>
-<li><strong>Declarative:</strong> You define the exact packages you need in a configuration file (<code>flake.nix</code>).</li>
-<li><strong>Reproducible:</strong> Nix guarantees that anyone who uses this file will get the exact same version of every package, down to the last bit.</li>
-<li><strong>Isolated:</strong> Projects can have their own set of dependencies without interfering with each other or your global system state.</li>
-</ul>
+<h1 id="02-devbox-setup">02: Devbox Setup<a class="headerlink" href="#02-devbox-setup" title="Permanent link">&para;</a></h1>
+<p>Reproducibility is critical for a stable GitOps workflow. We need to ensure that every engineer on the team, as well as our CI/CD pipelines, are using the exact same versions of our command-line tools. We will use DevBox to achieve this.</p>
 <h2 id="what-is-devbox">What is Devbox?<a class="headerlink" href="#what-is-devbox" title="Permanent link">&para;</a></h2>
-<p>While Nix is incredibly powerful, its syntax can be steep. <a href="https://www.jetpack.io/devbox/">Devbox</a> provides a user-friendly, JSON-based interface on top of Nix. It simplifies the process of managing your development environment.</p>
+<p><a href="https://www.jetpack.io/devbox/">Devbox</a> provides a user-friendly, JSON-based interface for managing reproducible development environments. It simplifies the process of ensuring consistent tooling across your team and CI/CD pipelines.</p>
 <p>We have already defined the necessary tools in the <code>devbox.json</code> file at the root of this project. Take a moment to inspect it:</p>
-<div class="language-json highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="err">```jso</span><span class="kc">n</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="p">{</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="nt">&quot;packages&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="s2">&quot;argocd@latest&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="s2">&quot;mkdocs@latest&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="s2">&quot;oh-my-zsh@latest&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="s2">&quot;zsh@latest&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="s2">&quot;kubectl@latest&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="s2">&quot;gh@latest&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="s2">&quot;uv@latest&quot;</span>
-<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">  </span><span class="p">],</span>
-<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">  </span><span class="nt">&quot;shell&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">    </span><span class="nt">&quot;init_hook&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">      </span><span class="s2">&quot;[ ! -d .venv ] &amp;&amp; uv venv&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">      </span><span class="s2">&quot;source .venv/bin/activate&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">      </span><span class="s2">&quot;export UV_LINK_MODE=copy&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">      </span><span class="s2">&quot;echo &#39;Welcome to the GitOps Tutorial Dev Environment!&#39;&quot;</span>
-<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">    </span><span class="p">],</span>
-<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="w">    </span><span class="nt">&quot;scripts&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="w">      </span><span class="nt">&quot;setup-tools&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="w">        </span><span class="s2">&quot;uv pip sync&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="w">        </span><span class="s2">&quot;curl -sL \&quot;https://raw.githubusercontent.com/crossplane/crossplane/main/install.sh\&quot; | sh&quot;</span>
-<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="w">      </span><span class="p">]</span>
-<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a><span class="w">  </span><span class="p">}</span>
-<a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="p">}</span>
+<div class="language-json highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">{</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">&quot;packages&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="s2">&quot;git@latest&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="s2">&quot;kubectl@latest&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="s2">&quot;gh@latest&quot;</span><span class="p">,</span><span class="w"> </span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="s2">&quot;uv@latest&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="s2">&quot;kind@latest&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="s2">&quot;kubeseal@latest&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="s2">&quot;azure-cli@latest&quot;</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">  </span><span class="p">],</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">  </span><span class="nt">&quot;shell&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">    </span><span class="nt">&quot;init_hook&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">      </span><span class="s2">&quot;[ ! -d .venv ] &amp;&amp; uv venv&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">      </span><span class="s2">&quot;source .venv/bin/activate&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">      </span><span class="s2">&quot;export UV_LINK_MODE=copy&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">      </span><span class="s2">&quot;echo &#39;Welcome to the GitOps Tutorial Dev Environment!&#39;&quot;</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">    </span><span class="p">],</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">    </span><span class="nt">&quot;scripts&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="w">      </span><span class="nt">&quot;setup-tools&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="w">        </span><span class="s2">&quot;mkdir -p ~/bin/&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="w">        </span><span class="s2">&quot;uv pip install -r pyproject.toml&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="w">        </span><span class="s2">&quot;[ ! -e ~/bin/crossplane ] &amp;&amp; curl -sL \&quot;https://raw.githubusercontent.com/crossplane/crossplane/main/install.sh\&quot; | sh &gt; /dev/null&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="w">        </span><span class="s2">&quot;mv crossplane ~/bin/ &amp;&amp; chmod +x ~/bin/crossplane&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="w">        </span><span class="s2">&quot;[ ! -e ~/bin/argocd ] &amp;&amp; curl -sSL -o argocd-linux-amd64 https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64 &amp;&amp; mv argocd-linux-amd64 ~/bin/argocd &amp;&amp; chmod +x ~/bin/argocd&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a><span class="w">        </span><span class="s2">&quot;echo &#39;export PATH=~/bin:$PATH&#39; &gt;&gt; ~/.profile&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="w">        </span><span class="s2">&quot;source ~/.profile&quot;</span>
+<a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a><span class="w">      </span><span class="p">]</span>
+<a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a><span class="p">}</span>
 </code></pre></div>
-<p><strong>Note on the <code>up</code> CLI:</strong> You may notice <code>up</code> in our packages list. This is the official command-line tool from Upbound, the creators of Crossplane. It provides helpful commands for managing Crossplane packages, configurations, and providers. While we will primarily use <code>kubectl</code> in this tutorial, <code>up</code> is an essential tool for advanced Crossplane development and is included here for completeness.</p>
-<p><strong>Note on the Crossplane CLI and Python Dependencies:</strong> The Crossplane CLI (<code>crossplane</code>) and all Python dependencies for MkDocs are installed via the <code>devbox run setup-tools</code> command. This ensures you always have the latest compatible versions, which is crucial for compatibility with Crossplane's rapid development cycle and for building the documentation.</p>
+<p><strong>Package Breakdown:</strong>
+- <strong>git@latest</strong>: Version control for GitOps workflows
+- <strong>kubectl@latest</strong>: Kubernetes command-line interface
+- <strong>gh@latest</strong>: GitHub CLI for repository management
+- <strong>uv@latest</strong>: Fast Python package installer and virtual environment manager
+- <strong>kind@latest</strong>: Kubernetes in Docker for local development
+- <strong>kubeseal@latest</strong>: CLI tool for encrypting secrets with Sealed Secrets
+- <strong>azure-cli@latest</strong>: Azure command-line interface for cloud resources</p>
+<p><strong>Setup Script Explanation:</strong>
+The <code>setup-tools</code> script performs several important tasks:</p>
+<ol>
+<li><strong>Creates local bin directory</strong>: <code>mkdir -p ~/bin/</code> - Safe location for user binaries</li>
+<li><strong>Installs Python dependencies</strong>: <code>uv pip install -r pyproject.toml</code> - MkDocs and documentation tools</li>
+<li><strong>Downloads Crossplane CLI</strong>: Latest stable version from official source</li>
+<li><strong>Downloads ArgoCD CLI</strong>: Latest stable version for GitOps management  </li>
+<li><strong>Updates PATH</strong>: Ensures tools are available in your shell session</li>
+</ol>
+<p><strong>Note on Tool Versions:</strong> The Crossplane CLI (<code>crossplane</code>) and ArgoCD CLI (<code>argocd</code>) are installed via the <code>devbox run setup-tools</code> command. This ensures you always have the latest compatible versions, which is crucial for compatibility with Crossplane's rapid development cycle.</p>
 <p>As you can see, we have pinned the exact versions of <code>kubectl</code>, and all our other essential tools.</p>
 <h2 id="setup-instructions">Setup Instructions<a class="headerlink" href="#setup-instructions" title="Permanent link">&para;</a></h2>
-<h3 id="1-install-nix">1. Install Nix<a class="headerlink" href="#1-install-nix" title="Permanent link">&para;</a></h3>
-<p>If you don't have Nix installed, follow the <a href="https://nixos.org/download.html">official installation guide</a>. We recommend the multi-user installation.</p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>sh<span class="w"> </span>&lt;<span class="o">(</span>curl<span class="w"> </span>-L<span class="w"> </span>https://nixos.org/nix/install<span class="o">)</span><span class="w"> </span>--daemon
-</code></pre></div>
-<h3 id="2-install-devbox">2. Install Devbox<a class="headerlink" href="#2-install-devbox" title="Permanent link">&para;</a></h3>
+<h3 id="1-install-devbox">1. Install Devbox<a class="headerlink" href="#1-install-devbox" title="Permanent link">&para;</a></h3>
 <p>Next, install Devbox.</p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://get.jetpack.io/devbox<span class="w"> </span><span class="p">|</span><span class="w"> </span>bash
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://get.jetpack.io/devbox<span class="w"> </span><span class="p">|</span><span class="w"> </span>bash
 </code></pre></div>
-<h3 id="3-activate-the-devbox-shell">3. Activate the Devbox Shell<a class="headerlink" href="#3-activate-the-devbox-shell" title="Permanent link">&para;</a></h3>
+<h3 id="2-activate-the-devbox-shell">2. Activate the Devbox Shell<a class="headerlink" href="#2-activate-the-devbox-shell" title="Permanent link">&para;</a></h3>
 <p>Now, navigate to the root of the <code>crossplane-gitops-tutorial</code> directory and run:</p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>devbox<span class="w"> </span>shell
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>devbox<span class="w"> </span>shell
 </code></pre></div>
 <p>This command will:</p>
 <ol>
 <li>Read the <code>devbox.json</code> file.</li>
-<li>Use Nix to download and install the exact versions of all the packages listed.</li>
+<li>Download and install the exact versions of all the packages listed.</li>
 <li>Activate a new shell session with all those tools available in your <code>PATH</code>.</li>
 </ol>
 <p>You are now in a fully reproducible development environment. Every command you run in this shell will use the tools defined in our project, not your globally installed versions.</p>
-<h3 id="4-install-project-tools">4. Install Project Tools<a class="headerlink" href="#4-install-project-tools" title="Permanent link">&para;</a></h3>
+<h3 id="3-install-project-tools">3. Install Project Tools<a class="headerlink" href="#3-install-project-tools" title="Permanent link">&para;</a></h3>
 <p>Run the <code>setup-tools</code> script to install the Crossplane CLI and Python dependencies for MkDocs:</p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>devbox<span class="w"> </span>run<span class="w"> </span>setup-tools
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>devbox<span class="w"> </span>run<span class="w"> </span>setup-tools
 </code></pre></div>
 <p>To verify, run:</p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>kubectl<span class="w"> </span>version<span class="w"> </span>--client
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="c1"># Should output v1.29.2 or the version pinned in devbox.json</span>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>crossplane<span class="w"> </span>version<span class="w"> </span>--client
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="c1"># Should output v2.0.0 or the version pinned in devbox.json</span>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>kubectl<span class="w"> </span>version<span class="w"> </span>--client
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="c1"># Should output v1.29.2 or later</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>crossplane<span class="w"> </span>version<span class="w"> </span>--client
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="c1"># Should output v1.16.0 or later</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>argocd<span class="w"> </span>version<span class="w"> </span>--client
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="c1"># Should output ArgoCD CLI version</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>kubeseal<span class="w"> </span>--version
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="c1"># Should output 0.24.0 or later</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>az<span class="w"> </span>version
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="c1"># Should output Azure CLI version information</span>
 </code></pre></div>
+<h2 id="troubleshooting-common-issues">Troubleshooting Common Issues<a class="headerlink" href="#troubleshooting-common-issues" title="Permanent link">&para;</a></h2>
+<p><strong>Issue: Command not found after setup</strong>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># Solution: Ensure PATH is updated</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;export PATH=~/bin:$PATH&#39;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>~/.bashrc<span class="w">  </span><span class="c1"># or ~/.zshrc</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="nb">source</span><span class="w"> </span>~/.bashrc<span class="w">  </span><span class="c1"># or ~/.zshrc</span>
+</code></pre></div></p>
+<p><strong>Issue: Permission denied on downloaded binaries</strong>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># Solution: Make binaries executable</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>chmod<span class="w"> </span>+x<span class="w"> </span>~/bin/crossplane<span class="w"> </span>~/bin/argocd
+</code></pre></div></p>
+<p><strong>Issue: DevBox shell not activating Python environment</strong>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># Solution: Manually activate the virtual environment</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="nb">source</span><span class="w"> </span>.venv/bin/activate
+</code></pre></div></p>
 <p>With our environment set up, we can now install the core components.</p>
 <p><strong>➡️ <a href="../03-local-cluster-setup/">Next: Local Cluster Setup</a></strong></p>
 

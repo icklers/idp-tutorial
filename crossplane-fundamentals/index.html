@@ -1,0 +1,1796 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A comprehensive guide to building an Internal Developer Platform using Crossplane and GitOps principles">
+      
+      
+        <meta name="author" content="Sebastiian Ickler">
+      
+      
+      
+        <link rel="prev" href="../gitops-fundamentals/03-workflow-patterns/">
+      
+      
+        <link rel="next" href="01-azure-provider-setup/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.17">
+    
+    
+      
+        <title>Crossplane Fundamentals - Internal Developer Platform Tutorial</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.7e37652d.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#crossplane-fundamentals" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Internal Developer Platform Tutorial" class="md-header__button md-logo" aria-label="Internal Developer Platform Tutorial" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Internal Developer Platform Tutorial
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Crossplane Fundamentals
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Internal Developer Platform Tutorial" class="md-nav__button md-logo" aria-label="Internal Developer Platform Tutorial" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Internal Developer Platform Tutorial
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Introduction
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Getting Started
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Getting Started
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/01-introduction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    01: Introduction to the GitOps Workflow
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/02-devbox-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    02: Devbox Setup
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/03-local-cluster-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    03: Local Cluster Setup
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/04-gitops-bootstrap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    04: GitOps Bootstrap with ArgoCD
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/05-sealed-secrets-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    05: Secure Secret Management (Sealed Secrets)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    GitOps Fundamentals
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            GitOps Fundamentals
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gitops-fundamentals/01-argocd-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    01: ArgoCD Setup for Crossplane
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gitops-fundamentals/02-crossplane-integration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    02: Crossplane Integration with ArgoCD
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gitops-fundamentals/03-workflow-patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    03: GitOps Workflow Patterns
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Crossplane Fundamentals
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Crossplane Fundamentals
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Crossplane Fundamentals
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Crossplane Fundamentals
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-makes-crossplane-v20-different" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Makes Crossplane v2.0 Different
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What Makes Crossplane v2.0 Different">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#namespaced-everything" class="md-nav__link">
+    <span class="md-ellipsis">
+      🏗️ Namespaced Everything
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#composition-functions-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔧 Composition Functions Only
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cleaner-developer-experience" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎯 Cleaner Developer Experience
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-youll-build" class="md-nav__link">
+    <span class="md-ellipsis">
+      What You'll Build
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#learning-philosophy-build-first-understand-later" class="md-nav__link">
+    <span class="md-ellipsis">
+      Learning Philosophy: "Build First, Understand Later"
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#azure-account-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      Azure Account Requirements
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#namespace-strategy-for-v20" class="md-nav__link">
+    <span class="md-ellipsis">
+      Namespace Strategy for v2.0
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Namespace Strategy for v2.0">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#resource-organization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Resource Organization
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#team-isolation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Team Isolation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rbac-benefits" class="md-nav__link">
+    <span class="md-ellipsis">
+      RBAC Benefits
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#function-based-composition-in-v2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Function-Based Composition in v2
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Function-Based Composition in v2">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core-functions-youll-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core Functions You'll Use
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-installation-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Function Installation Pattern
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pipeline-execution" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pipeline Execution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-youll-learn-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      When You'll Learn Functions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module Overview
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module Overview">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#module-1-azure-provider-setup-15-minutes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module 1: Azure Provider Setup (15 minutes)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#module-2-your-first-managed-resource-15-minutes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module 2: Your First Managed Resource (15 minutes)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#module-3-understanding-what-happened-15-minutes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module 3: Understanding What Happened (15 minutes)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#operations-in-crossplane-v2-alpha-feature" class="md-nav__link">
+    <span class="md-ellipsis">
+      Operations in Crossplane v2 (Alpha Feature)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Operations in Crossplane v2 (Alpha Feature)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#operation-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      Operation Types
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#use-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      Use Cases
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-daily-database-backup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example: Daily Database Backup
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enabling-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Enabling Operations
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#success-criteria" class="md-nav__link">
+    <span class="md-ellipsis">
+      Success Criteria
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#time-investment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Time Investment
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      Next Steps
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="01-azure-provider-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Module 1: Azure Provider Setup
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="02-first-managed-resource/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Module 2: Your First Managed Resource
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="03-understanding-crossplane/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Module 3: Understanding What Happened
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Crossplane Advanced Patterns
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Crossplane Advanced Patterns
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../crossplane-advanced-patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Crossplane Advanced Patterns
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../crossplane-advanced-patterns/01-your-first-composition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Module 1: Your First Composition
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../crossplane-advanced-patterns/02-networking-composition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Module 2: Networking Composition
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../crossplane-advanced-patterns/03-environment-patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Module 3: Environment Patterns
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Repository Management
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Repository Management
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../repository-management/01-multi-repo-strategy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    01: Multi-Repo Strategy for GitOps
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../repository-management/02-repository-templates/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    02: Repository Templates
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../repository-management/03-cross-repo-coordination/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    03: Cross-Repo Coordination with ArgoCD
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-makes-crossplane-v20-different" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Makes Crossplane v2.0 Different
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What Makes Crossplane v2.0 Different">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#namespaced-everything" class="md-nav__link">
+    <span class="md-ellipsis">
+      🏗️ Namespaced Everything
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#composition-functions-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔧 Composition Functions Only
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cleaner-developer-experience" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎯 Cleaner Developer Experience
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-youll-build" class="md-nav__link">
+    <span class="md-ellipsis">
+      What You'll Build
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#learning-philosophy-build-first-understand-later" class="md-nav__link">
+    <span class="md-ellipsis">
+      Learning Philosophy: "Build First, Understand Later"
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#azure-account-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      Azure Account Requirements
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#namespace-strategy-for-v20" class="md-nav__link">
+    <span class="md-ellipsis">
+      Namespace Strategy for v2.0
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Namespace Strategy for v2.0">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#resource-organization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Resource Organization
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#team-isolation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Team Isolation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rbac-benefits" class="md-nav__link">
+    <span class="md-ellipsis">
+      RBAC Benefits
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#function-based-composition-in-v2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Function-Based Composition in v2
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Function-Based Composition in v2">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core-functions-youll-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core Functions You'll Use
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-installation-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Function Installation Pattern
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pipeline-execution" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pipeline Execution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-youll-learn-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      When You'll Learn Functions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module Overview
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module Overview">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#module-1-azure-provider-setup-15-minutes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module 1: Azure Provider Setup (15 minutes)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#module-2-your-first-managed-resource-15-minutes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module 2: Your First Managed Resource (15 minutes)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#module-3-understanding-what-happened-15-minutes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module 3: Understanding What Happened (15 minutes)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#operations-in-crossplane-v2-alpha-feature" class="md-nav__link">
+    <span class="md-ellipsis">
+      Operations in Crossplane v2 (Alpha Feature)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Operations in Crossplane v2 (Alpha Feature)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#operation-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      Operation Types
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#use-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      Use Cases
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-daily-database-backup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example: Daily Database Backup
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enabling-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Enabling Operations
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#success-criteria" class="md-nav__link">
+    <span class="md-ellipsis">
+      Success Criteria
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#time-investment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Time Investment
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      Next Steps
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="crossplane-fundamentals">Crossplane Fundamentals<a class="headerlink" href="#crossplane-fundamentals" title="Permanent link">&para;</a></h1>
+<p>Welcome to the Crossplane v2.0 learning journey! In this section, you'll transform from a Crossplane beginner to someone who can provision real Azure infrastructure using GitOps workflows.</p>
+<h2 id="what-makes-crossplane-v20-different">What Makes Crossplane v2.0 Different<a class="headerlink" href="#what-makes-crossplane-v20-different" title="Permanent link">&para;</a></h2>
+<p>Crossplane v2.0 introduces a <strong>namespace-first architecture</strong> that makes building control planes more intuitive and powerful:</p>
+<h3 id="namespaced-everything">🏗️ <strong>Namespaced Everything</strong><a class="headerlink" href="#namespaced-everything" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Composite Resources (XRs)</strong> live in user namespaces, not cluster-wide</li>
+<li><strong>Managed Resources</strong> are namespaced for better isolation and RBAC</li>
+<li><strong>No more Claims</strong> - developers work directly with XRs</li>
+</ul>
+<h3 id="composition-functions-only">🔧 <strong>Composition Functions Only</strong><a class="headerlink" href="#composition-functions-only" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Native patch &amp; transform removed</strong> - functions provide more flexibility</li>
+<li><strong>Pipeline-based compositions</strong> with reusable function libraries</li>
+<li><strong>Any Kubernetes resource</strong> can be composed, not just managed resources</li>
+</ul>
+<h3 id="cleaner-developer-experience">🎯 <strong>Cleaner Developer Experience</strong><a class="headerlink" href="#cleaner-developer-experience" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>spec.crossplane</strong> groups all Crossplane machinery for clarity</li>
+<li><strong>Direct resource creation</strong> without intermediate claim objects</li>
+<li><strong>Better namespace isolation</strong> for teams and projects</li>
+</ul>
+<h2 id="what-youll-build">What You'll Build<a class="headerlink" href="#what-youll-build" title="Permanent link">&para;</a></h2>
+<p>By the end of these modules, you'll have:</p>
+<ul>
+<li>✅ <strong>Secure Azure Provider</strong> configured with Sealed Secrets  </li>
+<li>✅ <strong>Real Cloud Infrastructure</strong> provisioned via Git commits  </li>
+<li>✅ <strong>Production-Ready Security</strong> following best practices  </li>
+<li>✅ <strong>GitOps Workflows</strong> for infrastructure management  </li>
+</ul>
+<h2 id="learning-philosophy-build-first-understand-later">Learning Philosophy: "Build First, Understand Later"<a class="headerlink" href="#learning-philosophy-build-first-understand-later" title="Permanent link">&para;</a></h2>
+<p>We start with working examples that demonstrate immediate value, then dive deeper into concepts. Every exercise follows GitOps principles from day one and produces production-ready artifacts.</p>
+<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
+<p>Before starting this section, ensure you have completed:</p>
+<ul>
+<li>✅ <a href="../getting-started/02-devbox-setup/">Getting Started: DevBox Setup</a>  </li>
+<li>✅ <a href="../getting-started/03-local-cluster-setup/">Getting Started: Local Cluster Setup</a> </li>
+<li>✅ <a href="../getting-started/04-gitops-bootstrap/">Getting Started: GitOps Bootstrap</a>  </li>
+<li>✅ <a href="../getting-started/05-sealed-secrets-setup/">Getting Started: Sealed Secrets Setup</a>  </li>
+</ul>
+<h2 id="azure-account-requirements">Azure Account Requirements<a class="headerlink" href="#azure-account-requirements" title="Permanent link">&para;</a></h2>
+<p>You'll need an active Azure subscription with:</p>
+<ul>
+<li>✅ <strong>Subscription access</strong> to create resources  </li>
+<li>✅ <strong>Permission</strong> to create service principals  </li>
+<li>✅ <strong>Azure CLI</strong> configured and authenticated  </li>
+</ul>
+<h2 id="namespace-strategy-for-v20">Namespace Strategy for v2.0<a class="headerlink" href="#namespace-strategy-for-v20" title="Permanent link">&para;</a></h2>
+<p>In Crossplane v2.0, namespaces provide natural boundaries for:</p>
+<h3 id="resource-organization"><strong>Resource Organization</strong><a class="headerlink" href="#resource-organization" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>tutorial/              # Learning resources
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>├── ResourceGroups
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>├── VirtualNetworks    
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>└── XDevEnvironments
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>production/           # Production workloads
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>├── Databases
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>├── AKSClusters
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>└── XProdEnvironments
+</code></pre></div>
+<h3 id="team-isolation"><strong>Team Isolation</strong><a class="headerlink" href="#team-isolation" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong><code>frontend-team</code></strong> namespace for UI-focused resources</li>
+<li><strong><code>backend-team</code></strong> namespace for API and data resources  </li>
+<li><strong><code>platform-team</code></strong> namespace for shared infrastructure</li>
+</ul>
+<h3 id="rbac-benefits"><strong>RBAC Benefits</strong><a class="headerlink" href="#rbac-benefits" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Fine-grained permissions per namespace</li>
+<li>Team-specific resource access</li>
+<li>Natural audit boundaries</li>
+</ul>
+<p><strong>For this tutorial</strong>: We'll use the <strong><code>tutorial</code></strong> namespace to keep all learning resources organized and isolated from other workloads.</p>
+<h2 id="function-based-composition-in-v2">Function-Based Composition in v2<a class="headerlink" href="#function-based-composition-in-v2" title="Permanent link">&para;</a></h2>
+<p>Crossplane v2 moves from native patch-and-transform to <strong>function pipelines</strong>. Understanding functions is crucial for v2 success:</p>
+<h3 id="core-functions-youll-use"><strong>Core Functions You'll Use</strong><a class="headerlink" href="#core-functions-youll-use" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong><code>function-patch-and-transform</code></strong>: YAML-based transformations (most common)</li>
+<li><strong><code>function-python</code></strong>: Python scripting for complex logic  </li>
+<li><strong><code>function-kcl</code></strong>: KCL configuration language for validation</li>
+<li><strong><code>function-go-templating</code></strong>: Go templates for dynamic generation</li>
+</ul>
+<h3 id="function-installation-pattern"><strong>Function Installation Pattern</strong><a class="headerlink" href="#function-installation-pattern" title="Permanent link">&para;</a></h3>
+<div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pkg.crossplane.io/v1beta1</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Function</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">function-patch-and-transform</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span><span class="nt">package</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">xpkg.upbound.io/crossplane-contrib/function-patch-and-transform:v0.2.1</span>
+</code></pre></div>
+<h3 id="pipeline-execution"><strong>Pipeline Execution</strong><a class="headerlink" href="#pipeline-execution" title="Permanent link">&para;</a></h3>
+<div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apiextensions.crossplane.io/v1</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Composition</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Pipeline</span><span class="w">  </span><span class="c1"># v2 default</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">  </span><span class="nt">pipeline</span><span class="p">:</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">step</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">patch-resources</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="nt">functionRef</span><span class="p">:</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">function-patch-and-transform</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">    </span><span class="nt">input</span><span class="p">:</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">      </span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pt.fn.crossplane.io/v1beta1</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">      </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Resources</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">      </span><span class="c1"># Function-specific configuration</span>
+</code></pre></div>
+<h3 id="when-youll-learn-functions"><strong>When You'll Learn Functions</strong><a class="headerlink" href="#when-youll-learn-functions" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Module 2</strong>: Basic function installation and usage</li>
+<li><strong>Advanced Patterns</strong>: Complex function pipelines and custom logic</li>
+<li><strong>Troubleshooting</strong>: Function debugging techniques</li>
+</ul>
+<h2 id="module-overview">Module Overview<a class="headerlink" href="#module-overview" title="Permanent link">&para;</a></h2>
+<h3 id="module-1-azure-provider-setup-15-minutes">Module 1: Azure Provider Setup (15 minutes)<a class="headerlink" href="#module-1-azure-provider-setup-15-minutes" title="Permanent link">&para;</a></h3>
+<p><strong>Objective:</strong> Configure Crossplane to securely manage Azure resources</p>
+<p><strong>What you'll learn:</strong><br />
+- How to install Azure provider in Crossplane<br />
+- Secure credential management with Sealed Secrets<br />
+- Provider configuration and verification<br />
+- GitOps deployment of provider components  </p>
+<p><strong>Deliverables:</strong><br />
+- Azure provider installed and configured<br />
+- Service principal credentials securely stored<br />
+- Provider health verification  </p>
+<h3 id="module-2-your-first-managed-resource-15-minutes">Module 2: Your First Managed Resource (15 minutes)<a class="headerlink" href="#module-2-your-first-managed-resource-15-minutes" title="Permanent link">&para;</a></h3>
+<p><strong>Objective:</strong> Deploy a real Azure resource using Crossplane</p>
+<p><strong>What you'll learn:</strong><br />
+- What are Managed Resources (MRs)<br />
+- How to create Azure Resource Groups<br />
+- GitOps workflow for resource deployment<br />
+- Resource status monitoring and troubleshooting  </p>
+<p><strong>Deliverables:</strong><br />
+- Azure Resource Group deployed via Git<br />
+- Understanding of resource lifecycle<br />
+- ArgoCD application managing infrastructure  </p>
+<h3 id="module-3-understanding-what-happened-15-minutes">Module 3: Understanding What Happened (15 minutes)<a class="headerlink" href="#module-3-understanding-what-happened-15-minutes" title="Permanent link">&para;</a></h3>
+<p><strong>Objective:</strong> Explore the Crossplane resource model and reconciliation</p>
+<p><strong>What you'll learn:</strong><br />
+- Crossplane architecture and components<br />
+- Resource states and conditions<br />
+- Troubleshooting resource issues<br />
+- Best practices for resource management  </p>
+<p><strong>Deliverables:</strong><br />
+- Deep understanding of Crossplane concepts<br />
+- Troubleshooting skills and techniques<br />
+- Foundation for advanced patterns  </p>
+<h2 id="operations-in-crossplane-v2-alpha-feature">Operations in Crossplane v2 (Alpha Feature)<a class="headerlink" href="#operations-in-crossplane-v2-alpha-feature" title="Permanent link">&para;</a></h2>
+<p>Crossplane v2 introduces <strong>Operations</strong> - an alpha feature for operational workflows that run to completion like Kubernetes Jobs:</p>
+<h3 id="operation-types"><strong>Operation Types</strong><a class="headerlink" href="#operation-types" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong><code>Operation</code></strong>: Run function pipeline once  </li>
+<li><strong><code>CronOperation</code></strong>: Scheduled function execution  </li>
+<li><strong><code>WatchOperation</code></strong>: Event-driven function triggers  </li>
+</ul>
+<h3 id="use-cases"><strong>Use Cases</strong><a class="headerlink" href="#use-cases" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Certificate renewal</strong>: Automated cert lifecycle management</li>
+<li><strong>Database backups</strong>: Scheduled backup operations  </li>
+<li><strong>Health monitoring</strong>: Periodic health checks and reporting</li>
+<li><strong>Configuration drift</strong>: Automated configuration validation</li>
+</ul>
+<h3 id="example-daily-database-backup"><strong>Example: Daily Database Backup</strong><a class="headerlink" href="#example-daily-database-backup" title="Permanent link">&para;</a></h3>
+<div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ops.crossplane.io/v1alpha1</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CronOperation</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">backup-postgres</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">production</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">  </span><span class="nt">schedule</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;0</span><span class="nv"> </span><span class="s">2</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*&quot;</span><span class="w">  </span><span class="c1"># Daily at 2 AM</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">  </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Pipeline</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">  </span><span class="nt">pipeline</span><span class="p">:</span>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">step</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">backup-database</span>
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">    </span><span class="nt">functionRef</span><span class="p">:</span>
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">function-python</span>
+</code></pre></div>
+<h3 id="enabling-operations"><strong>Enabling Operations</strong><a class="headerlink" href="#enabling-operations" title="Permanent link">&para;</a></h3>
+<p>Operations must be explicitly enabled:
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># Add to Crossplane deployment</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>--enable-operations<span class="o">=</span><span class="nb">true</span>
+</code></pre></div></p>
+<p><strong>Note:</strong> Operations are alpha in v2 and may change. We'll cover them in advanced patterns once you master the core concepts.</p>
+<h2 id="success-criteria">Success Criteria<a class="headerlink" href="#success-criteria" title="Permanent link">&para;</a></h2>
+<p>After completing this section, you should be able to:</p>
+<ul>
+<li>Explain the relationship between Providers, ProviderConfigs, and Managed Resources  </li>
+<li>Create Azure resources using Crossplane and GitOps workflows  </li>
+<li>Troubleshoot common resource provisioning issues  </li>
+<li>Follow security best practices for cloud credentials  </li>
+<li>Use ArgoCD to deploy and manage infrastructure components  </li>
+</ul>
+<h2 id="time-investment">Time Investment<a class="headerlink" href="#time-investment" title="Permanent link">&para;</a></h2>
+<p><strong>Total time:</strong> ~45 minutes of hands-on exercises
+<strong>Format:</strong> Self-paced with immediate feedback
+<strong>Approach:</strong> Practical exercises with real Azure resources</p>
+<h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link">&para;</a></h2>
+<p>Ready to get started? Let's begin with setting up the Azure provider:</p>
+<p><strong>➡️ <a href="01-azure-provider-setup/">Module 1: Azure Provider Setup</a></strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["content.code.copy"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.92b07e13.min.js"></script>
+      
+    
+  </body>
+</html>
