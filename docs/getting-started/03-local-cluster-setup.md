@@ -16,8 +16,11 @@ nodes:
 Now, from within your `devbox shell`, run:
 
 ```bash
+# Use the provided gitops-bootstrap configuration (recommended)
 kind create cluster --config gitops-bootstrap/kind-cluster/kind-cluster.yaml
 ```
+
+> **Note:** There's also an exercise file at `exercises/getting-started/cluster-setup/kind-cluster.yaml` with the same configuration for practice, but we recommend using the gitops-bootstrap version for consistency with the tutorial structure.
 
 This will take a few minutes to provision a new, single-node Kubernetes cluster. Once it's complete, your `kubectl` context will automatically be configured to point to the new `kind-idp-tutorial` cluster.
 

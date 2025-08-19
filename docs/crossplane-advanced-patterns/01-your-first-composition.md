@@ -732,9 +732,12 @@ git commit -m "feat: promote Alice's environment to staging
 - Add monitoring and alerting
 - Staging-specific configuration applied"
 
-# Create PR for staging promotion (requires review)
+# Push to feature branch and create PR for staging promotion (requires review)
+git push -u origin promote/alice-staging
 gh pr create --title "Promote: Alice's environment to staging" \
-             --body "Promoting validated dev environment to staging with enhanced configuration"
+             --body "Promoting validated dev environment to staging with enhanced configuration" \
+             --reviewer platform-team
+gh pr merge --auto --squash --delete-branch
 ```
 
 #### Stage 3: Production Promotion (Strict Control)
