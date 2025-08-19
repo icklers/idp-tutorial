@@ -53,23 +53,6 @@ data:
         -- ... (lua script from above) ...
 ```
 
-> 📁 **Exercise Files**: Available at [`exercises/gitops-fundamentals/argocd/argocd-cm-crossplane-health.yaml`](../../exercises/gitops-fundamentals/argocd/argocd-cm-crossplane-health.yaml)
->
-> ```bash
-> user@host idp-tutorial> $ cp exercises/gitops-fundamentals/argocd/argocd-cm-crossplane-health.yaml gitops-bootstrap/argocd/
-> 
-> # OPTION A — Bootstrap (one-liner commit+push)
-> user@host idp-tutorial> $ git add gitops-bootstrap/argocd/argocd-cm-crossplane-health.yaml && git commit -m "gitops: add crossplane health checks to ArgoCD" && git push -u origin HEAD
->
-> # OPTION B — PR flow for reviewable changes
-> user@host idp-tutorial> $ git switch -c chore/argocd-health
-> user@host idp-tutorial> $ git add gitops-bootstrap/argocd/argocd-cm-crossplane-health.yaml
-> user@host idp-tutorial> $ git commit -m "gitops: add crossplane health checks to ArgoCD"
-> user@host idp-tutorial> $ git push -u origin $(git branch --show-current)
-> user@host idp-tutorial> $ gh pr create --title "Add ArgoCD Crossplane health checks" --body "Adds health.lua customizations via argocd-cm"
-> user@host idp-tutorial> $ gh pr merge --auto --squash --delete-branch
-> ```
-
 We have already applied a set of standard Crossplane health checks as part of our bootstrap process.
 
 ## RBAC for Crossplane Resources
@@ -94,23 +77,6 @@ rules:
   verbs:
   - "*"
 ```
-
-> 📁 **Exercise Files**: Available at [`exercises/gitops-fundamentals/rbac/argocd-crossplane-clusterrole.yaml`](../../exercises/gitops-fundamentals/rbac/argocd-crossplane-clusterrole.yaml)
->
-> ```bash
-> user@host idp-tutorial> $ cp exercises/gitops-fundamentals/rbac/argocd-crossplane-clusterrole.yaml platform-core/
-> 
-> # OPTION A — Bootstrap (one-liner commit+push)
-> user@host idp-tutorial> $ git add platform-core/argocd-crossplane-clusterrole.yaml && git commit -m "gitops: grant ArgoCD controller permissions for Crossplane" && git push -u origin HEAD
->
-> # OPTION B — PR flow for reviewable changes
-> user@host idp-tutorial> $ git switch -c chore/argocd-rbac
-> user@host idp-tutorial> $ git add platform-core/argocd-crossplane-clusterrole.yaml
-> user@host idp-tutorial> $ git commit -m "gitops: grant ArgoCD controller permissions for Crossplane"
-> user@host idp-tutorial> $ git push -u origin $(git branch --show-current)
-> user@host idp-tutorial> $ gh pr create --title "Grant ArgoCD controller Crossplane RBAC" --body "Adds ClusterRole for compositions and XRDs"
-> user@host idp-tutorial> $ gh pr merge --auto --squash --delete-branch
-> ```
 
 Then, you bind this role to the ArgoCD Application Controller's Service Account.
 
