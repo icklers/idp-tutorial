@@ -1,0 +1,84 @@
+# File: exercises/gitops-fundamentals/argocd/argocd-cm-crossplane-health.yaml
+# Description: ArgoCD ConfigMap with Crossplane resource health checks
+# Tutorial Reference: docs/gitops-fundamentals/01-argocd-setup.md
+# Prerequisites: ArgoCD installed
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-cm
+  namespace: argocd
+data:
+  resource.customizations: |
+    apiextensions.crossplane.io/Composition:
+      health.lua: |
+        -- Custom health check for Crossplane Compositions
+        -- This ensures ArgoCD properly understands Composition health status
+        hs = {}
+        if obj.status ~= nil then
+          if obj.status.conditions ~= nil then
+            for i, condition in ipairs(obj.status.conditions) do
+              if condition.type == "Ready" and condition.status == "True" then
+                hs.status = "Healthy"
+                hs.message = "Composition is ready"
+                return hs
+              end
+              if condition.type == "Ready" and condition.status == "False" then
+                hs.status = "Degraded"
+                hs.message = condition.message
+                return hs
+              end
+            end
+          end
+        end
+        hs.status = "Progressing"
+        hs.message = "Waiting for Composition status"
+        return hs
+    
+    apiextensions.crossplane.io/CompositeResourceDefinition:
+      health.lua: |
+        -- Custom health check for Crossplane XRDs
+        hs = {}
+        if obj.status ~= nil then
+          if obj.status.conditions ~= nil then
+            for i, condition in ipairs(obj.status.conditions) do
+              if condition.type == "Established" and condition.status == "True" then
+                hs.status = "Healthy"
+                hs.message = "XRD is established"
+                return hs
+              end
+              if condition.type == "Established" and condition.status == "False" then
+                hs.status = "Degraded"
+                hs.message = condition.message
+                return hs
+              end
+            end
+          end
+        end
+        hs.status = "Progressing"
+        hs.message = "Waiting for XRD to be established"
+        return hs
+    
+    pkg.crossplane.io/Provider:
+      health.lua: |
+        -- Custom health check for Crossplane Providers
+        hs = {}
+        if obj.status ~= nil then
+          if obj.status.conditions ~= nil then
+            for i, condition in ipairs(obj.status.conditions) do
+              if condition.type == "Healthy" and condition.status == "True" then
+                hs.status = "Healthy"
+                hs.message = "Provider is healthy"
+                return hs
+              end
+              if condition.type == "Healthy" and condition.status == "False" then
+                hs.status = "Degraded"
+                hs.message = condition.message
+                return hs
+              end
+            end
+          end
+        end
+        hs.status = "Progressing"
+        hs.message = "Waiting for Provider to become healthy"
+        return hs

@@ -3,11 +3,11 @@ nav:
   - 'Getting Started': 'getting-started/'
   - 'GitOps Fundamentals': 'gitops-fundamentals/'
   - 'Crossplane Fundamentals': 'crossplane-fundamentals/'
+  - 'Security': 'security/'
   - 'Crossplane Advanced Patterns': 'crossplane-advanced-patterns/'
-  # - 'Security': 'security/'
-  # - 'Observability': 'observability/'
+  - 'Observability': 'observability/'
   - 'Repository Management': 'repository-management/'
-  # - 'Advanced Topics': 'advanced/'
-  # - 'Troubleshooting': 'troubleshooting.md'
+  - 'Advanced Topics': 'advanced/'
+  - 'Troubleshooting': 'troubleshooting.md'
 
 flatten_single_child_sections: true 

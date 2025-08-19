@@ -11,6 +11,24 @@ By the end of this section, you'll have:
 - ✅ Secure secret management with Sealed Secrets
 - ✅ Foundation for Crossplane infrastructure automation
 
+## Repository Structure
+
+This tutorial repository is organized as follows:
+
+```
+idp-tutorial/
+├── docs/                    # Tutorial documentation (you're reading this)
+├── exercises/               # Hands-on exercise files
+├── gitops-bootstrap/        # Ready-to-use bootstrap configurations
+├── platform-core/          # Pre-populated platform configurations
+└── repository-templates/    # Templates for creating new repositories
+```
+
+- **docs/**: Step-by-step tutorial content
+- **exercises/**: Practice files organized by module
+- **gitops-bootstrap/**: Production-ready GitOps configurations
+- **platform-core/**: Platform components managed by ArgoCD
+
 ## Prerequisites
 
 Before starting, ensure you have:
@@ -20,6 +38,32 @@ Before starting, ensure you have:
 - **Azure subscription** (free tier is sufficient for most exercises)
 - **8GB+ RAM** recommended for local cluster
 - **10GB+ free disk space**
+
+## Prerequisites Validation
+
+Before starting, validate your environment:
+
+### 1. Git Configuration
+```bash
+git --version
+# Expected: git version 2.40.0 or later
+
+git config --global user.name
+git config --global user.email
+# Expected: Your name and email configured
+```
+
+### 2. GitHub Access
+```bash
+gh auth status
+# Expected: ✓ Logged in to github.com as <username>
+```
+
+### 3. Azure CLI
+```bash
+az account show
+# Expected: JSON output showing your active subscription
+```
 
 ## Learning Path Overview
 

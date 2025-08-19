@@ -1,0 +1,42 @@
+# File: exercises/security/rbac/argocd-rbac-config.yaml
+# Description: ArgoCD RBAC configuration for user and group permissions
+# Tutorial Reference: docs/security/03-rbac.md
+# Prerequisites: ArgoCD installed
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-rbac-cm
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: argocd-rbac-cm
+    app.kubernetes.io/part-of: argocd
+data:
+  # Built-in policies
+  policy.default: role:readonly
+  
+  # Custom RBAC policies
+  policy.csv: |
+    # Platform Team - Full access to all applications and projects
+    g, platform-team, role:admin
+    
+    # DevOps Team - Admin access to infrastructure applications
+    p, role:devops, applications, *, */*, allow
+    p, role:devops, clusters, *, *, allow
+    p, role:devops, repositories, *, *, allow
+    g, devops-team, role:devops
+    
+    # Development Team - Limited access to dev applications
+    p, role:dev, applications, get, dev-project/*, allow
+    p, role:dev, applications, action/*, dev-project/*, allow
+    p, role:dev, applications, sync, dev-project/*, allow
+    g, dev-team, role:dev
+    
+    # Read-only access for observers
+    p, role:readonly, applications, get, */*, allow
+    p, role:readonly, clusters, get, *, allow
+    p, role:readonly, repositories, get, *, allow
+    g, observers, role:readonly
+  
+  # OIDC/SSO configuration (adjust for your identity provider)
+  policy.matchMode: glob

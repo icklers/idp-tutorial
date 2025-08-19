@@ -70,12 +70,19 @@ As you can see, we have pinned the exact versions of `kubectl`, and all our othe
 Next, install Devbox.
 
 ```bash
+# Install DevBox (works on macOS and Linux)
 curl -fsSL https://get.jetpack.io/devbox | bash
+
+# For macOS with Homebrew (alternative)
+# brew install jetpack-io/tap/devbox
+
+# Verify installation
+devbox version
 ```
 
 ### 2. Activate the Devbox Shell
 
-Now, navigate to the root of the `crossplane-gitops-tutorial` directory and run:
+Now, navigate to the root of the `idp-tutorial` directory and run:
 
 ```bash
 devbox shell

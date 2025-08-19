@@ -1,0 +1,51 @@
+# File: exercises/gitops-fundamentals/workflow-patterns/github-actions/pr-infrastructure.yml
+# Description: GitHub Actions workflow for testing infrastructure changes in PR environments
+# Tutorial Reference: docs/gitops-fundamentals/03-workflow-patterns.md
+# Prerequisites: Kubernetes cluster access, kubectl configured, proper RBAC
+
+name: Infrastructure PR Testing
+on:
+  pull_request:
+    paths: ['environments/dev/**']
+
+jobs:
+  test-infrastructure:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup kubectl
+      uses: azure/setup-kubectl@v3
+      with:
+        version: 'latest'
+    
+    - name: Configure Kubernetes context
+      run: |
+        # Configure cluster access (replace with your setup)
+        echo "${{ secrets.KUBECONFIG }}" | base64 -d > kubeconfig
+        export KUBECONFIG=kubeconfig
+    
+    - name: Create PR Environment
+      run: |
+        # Create PR-specific resources with suffix
+        export PR_SUFFIX="pr-${{ github.event.number }}"
+        
+        # Process templates and create PR environment
+        envsubst < environments/dev/infrastructure/redis-cache.yaml \
+          | sed "s/name: user-session-cache/name: user-session-cache-${PR_SUFFIX}/" \
+          | kubectl apply -f -
+        
+        # Wait for resources to be ready
+        kubectl wait --for=condition=Ready xrediscache/user-session-cache-${PR_SUFFIX} -n dev --timeout=300s
+    
+    - name: Run Integration Tests
+      run: |
+        # Run tests against PR environment
+        export REDIS_URL="user-session-cache-pr-${{ github.event.number }}.dev.svc.cluster.local"
+        npm test -- --environment=pr-${{ github.event.number }}
+    
+    - name: Cleanup on Failure
+      if: failure()
+      run: |
+        export PR_SUFFIX="pr-${{ github.event.number }}"
+        kubectl delete xrediscache/user-session-cache-${PR_SUFFIX} -n dev

@@ -1,0 +1,37 @@
+# File: exercises/gitops-fundamentals/workflow-patterns/github-actions/production-promotion.yml
+# Description: GitHub Actions workflow for production deployments with approval gates
+# Tutorial Reference: docs/gitops-fundamentals/03-workflow-patterns.md
+# Prerequisites: GitHub Environment protection rules configured, proper RBAC
+
+name: Production Promotion
+on:
+  push:
+    paths: ['environments/production/**']
+    branches: [main]
+
+jobs:
+  production-gate:
+    runs-on: ubuntu-latest
+    environment: production  # Requires GitHub Environment protection rules
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Validate Production Changes
+      run: |
+        # Validate that changes exist in staging first
+        if ! diff -r environments/staging/infrastructure environments/production/infrastructure; then
+          echo "✅ Production changes differ from staging - manual review required"
+        fi
+        
+        # Run production-specific validations
+        kubeval environments/production/infrastructure/*.yaml
+        conftest verify environments/production/infrastructure/*.yaml
+    
+    - name: Manual Approval Gate
+      uses: hmarr/auto-approve-action@v3
+      # This step requires manual approval via GitHub UI
+    
+    - name: Deploy to Production
+      run: |
+        echo "🚀 Production deployment approved and proceeding"
+        # ArgoCD will handle the actual deployment via GitOps

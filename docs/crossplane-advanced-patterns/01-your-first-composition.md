@@ -234,6 +234,8 @@ spec:
                 description: "Environment is ready for use"
 ```
 
+> 📁 **Exercise Files**: The complete XRD configuration is available at [`exercises/crossplane-advanced-patterns-01/platform-core/xrds/dev-environment-xrd.yaml`](../../exercises/crossplane-advanced-patterns-01/platform-core/xrds/dev-environment-xrd.yaml)
+
 **Key XRD concepts explained:**
 
 - **`group` and `names`**: Define the API endpoint (like `apps/v1` for Deployments)
@@ -408,6 +410,8 @@ spec:
           toFieldPath: status.virtualNetworkId
 ```
 
+> 📁 **Exercise Files**: The complete Composition configuration is available at [`exercises/crossplane-advanced-patterns-01/platform-core/compositions/dev-environment-composition.yaml`](../../exercises/crossplane-advanced-patterns-01/platform-core/compositions/dev-environment-composition.yaml)
+
 **v2 Composition concepts explained:**
 
 - **`mode: Pipeline`**: v2 function-based composition approach
@@ -501,6 +505,8 @@ spec:
       - CreateNamespace=true
       - ApplyOutOfSyncOnly=true
 ```
+
+> 📁 **Exercise Files**: The complete ArgoCD Applications configuration is available at [`exercises/crossplane-advanced-patterns-01/applications/platform/platform-apis.yaml`](../../exercises/crossplane-advanced-patterns-01/applications/platform/platform-apis.yaml)
 
 ## Step 4: Deploy the Platform
 
@@ -623,6 +629,8 @@ git commit -m "feat: create Alice's development environment
 git push -u origin feature/alice-dev-environment
 ```
 
+> 📁 **Exercise Files**: The complete environment configuration is available at [`exercises/crossplane-advanced-patterns-01/environments/dev/infrastructure/alice-dev.yaml`](../../exercises/crossplane-advanced-patterns-01/environments/dev/infrastructure/alice-dev.yaml)
+
 #### Automatic PR Environment Testing
 **GitHub Actions** automatically creates a **PR-specific environment** for testing:
 
@@ -678,6 +686,8 @@ jobs:
         kubectl delete namespace dev-pr-${{ github.event.number }} --ignore-not-found=true
 ```
 
+> 📁 **Exercise Files**: The complete GitHub Actions workflow is available at [`exercises/crossplane-advanced-patterns-01/.github/workflows/crossplane-pr-testing.yml`](../../exercises/crossplane-advanced-patterns-01/.github/workflows/crossplane-pr-testing.yml)
+
 ### 5.2 Environment Promotion Pipeline
 
 Following our **controlled promotion** pattern:
@@ -722,9 +732,12 @@ git commit -m "feat: promote Alice's environment to staging
 - Add monitoring and alerting
 - Staging-specific configuration applied"
 
-# Create PR for staging promotion (requires review)
+# Push to feature branch and create PR for staging promotion (requires review)
+git push -u origin promote/alice-staging
 gh pr create --title "Promote: Alice's environment to staging" \
-             --body "Promoting validated dev environment to staging with enhanced configuration"
+             --body "Promoting validated dev environment to staging with enhanced configuration" \
+             --reviewer platform-team
+gh pr merge --auto --squash --delete-branch
 ```
 
 #### Stage 3: Production Promotion (Strict Control)
@@ -827,6 +840,8 @@ spec:
         - /metadata/generation
         - /status
 ```
+
+> 📁 **Exercise Files**: The complete ArgoCD ApplicationSet configuration is available at [`exercises/crossplane-advanced-patterns-01/applications/platform/environment-applicationset.yaml`](../../exercises/crossplane-advanced-patterns-01/applications/platform/environment-applicationset.yaml)
 
 **Benefits of this ApplicationSet approach:**
 - **Automatic discovery** of new environments (dev, staging, production)

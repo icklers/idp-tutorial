@@ -1,0 +1,72 @@
+# File: exercises/security/chainguard-images/crossplane-provider-policy.yaml
+# Description: Kyverno ClusterPolicy to enforce Chainguard images for Crossplane providers
+# Tutorial Reference: docs/security/01-chainguard-images.md
+# Prerequisites: Kyverno installed
+
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-chainguard-crossplane-providers
+  annotations:
+    policies.kyverno.io/title: Require Chainguard Images for Crossplane Providers
+    policies.kyverno.io/category: Security
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/description: >-
+      This policy ensures that all Crossplane provider pods use only
+      Chainguard images from the cgr.dev registry.
+spec:
+  validationFailureAction: Enforce
+  background: true
+  rules:
+    - name: require-chainguard-providers
+      match:
+        any:
+        - resources:
+            kinds:
+              - Pod
+            namespaces:
+              - crossplane-system
+      validate:
+        message: "Crossplane provider pods must use Chainguard images from cgr.dev/chainguard/"
+        pattern:
+          spec:
+            containers:
+            - name: "*"
+              image: "cgr.dev/chainguard/provider-*"
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: verify-crossplane-provider-signatures
+  annotations:
+    policies.kyverno.io/title: Verify Crossplane Provider Signatures
+    policies.kyverno.io/category: Security
+    policies.kyverno.io/severity: high
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/description: >-
+      This policy verifies that all Crossplane provider images are properly
+      signed using Sigstore keyless verification.
+spec:
+  validationFailureAction: Enforce
+  background: false
+  webhookTimeoutSeconds: 30
+  failurePolicy: Fail
+  rules:
+    - name: verify-provider-signatures
+      match:
+        any:
+        - resources:
+            kinds:
+              - Pod
+            namespaces:
+              - crossplane-system
+      verifyImages:
+      - imageReferences:
+        - "cgr.dev/chainguard/provider-*"
+        attestors:
+        - count: 1
+          entries:
+          - keyless:
+              subject: "https://github.com/chainguard-images/images/.github/workflows/release.yaml@refs/heads/main"
+              issuer: "https://token.actions.githubusercontent.com"

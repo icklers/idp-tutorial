@@ -1,0 +1,51 @@
+# File: exercises/gitops-fundamentals/workflow-patterns/applicationset-application-infrastructure.yaml
+# Description: ApplicationSet to deploy application infrastructure across environments
+# Tutorial Reference: docs/gitops-fundamentals/03-workflow-patterns.md
+# Prerequisites: ArgoCD ApplicationSet controller installed; repo URL updated to your organization
+
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: application-infrastructure
+  namespace: argocd
+spec:
+  generators:
+  - matrix:
+      generators:
+      - git:
+          repoURL: https://github.com/your-org/infrastructure-gitops.git
+          revision: HEAD
+          directories:
+          - path: applications/*
+      - list:
+          elements:
+          - env: dev
+            cluster: https://kubernetes.default.svc
+          - env: staging
+            cluster: https://staging-cluster-url
+          - env: production
+            cluster: https://production-cluster-url
+  template:
+    metadata:
+      name: '{{path.basename}}-{{env}}'
+      labels:
+        app: '{{path.basename}}'
+        env: '{{env}}'
+    spec:
+      project: default
+      sources:
+      - repoURL: https://github.com/your-org/infrastructure-gitops.git
+        targetRevision: HEAD
+        path: '{{path}}'
+      - repoURL: https://github.com/your-org/infrastructure-gitops.git
+        targetRevision: HEAD
+        path: 'environments/{{env}}/{{path}}'
+      destination:
+        server: '{{cluster}}'
+        namespace: '{{path.basename}}-{{env}}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+        - CreateNamespace=true

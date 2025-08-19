@@ -1,0 +1,91 @@
+# File: exercises/security/rbac/platform-team-rbac.yaml
+# Description: Kubernetes RBAC for platform team to manage Crossplane core resources
+# Tutorial Reference: docs/security/03-rbac.md
+# Prerequisites: Crossplane installed, platform team users/groups defined
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: platform-team-crossplane-admin
+  labels:
+    app: crossplane-tutorial
+    component: rbac
+    team: platform
+rules:
+# Full access to Crossplane core resources
+- apiGroups:
+  - "apiextensions.crossplane.io"
+  resources:
+  - "compositions"
+  - "compositeresourcedefinitions"
+  verbs:
+  - "*"
+# Full access to Crossplane package management
+- apiGroups:
+  - "pkg.crossplane.io"
+  resources:
+  - "providers"
+  - "configurations"
+  - "functions"
+  verbs:
+  - "*"
+# Access to provider configs
+- apiGroups:
+  - "azure.upbound.io"
+  - "aws.upbound.io" 
+  - "gcp.upbound.io"
+  resources:
+  - "providerconfigs"
+  verbs:
+  - "*"
+# Access to manage secrets for provider authentication
+- apiGroups:
+  - ""
+  resources:
+  - "secrets"
+  verbs:
+  - "create"
+  - "get"
+  - "list"
+  - "watch"
+  - "update"
+  - "patch"
+  - "delete"
+  resourceNames:
+  - "azure-secret"
+  - "aws-secret"
+  - "gcp-secret"
+# Read-only access to all managed resources for troubleshooting
+- apiGroups:
+  - "*"
+  resources:
+  - "*"
+  verbs:
+  - "get"
+  - "list"
+  - "watch"
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: platform-team-crossplane-admin-binding
+  labels:
+    app: crossplane-tutorial
+    component: rbac
+    team: platform
+subjects:
+# Bind to specific users
+- kind: User
+  name: platform-admin@company.com
+  apiGroup: rbac.authorization.k8s.io
+- kind: User
+  name: sre-lead@company.com
+  apiGroup: rbac.authorization.k8s.io
+# Bind to groups (if using OIDC/SSO)
+- kind: Group
+  name: platform-team
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: platform-team-crossplane-admin
+  apiGroup: rbac.authorization.k8s.io

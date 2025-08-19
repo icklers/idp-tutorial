@@ -504,6 +504,24 @@ argocd app get azure-resource-group-tutorial
 - **ArgoCD shows "OutOfSync"** → Resource may have been modified outside Crossplane
 - **Resource not visible in Azure** → Check subscription context with `az account show`
 
+## Cleanup Resources
+
+To remove the resources created in this exercise:
+
+```bash
+# Delete the managed resource by removing the configuration file
+rm platform-core/azure/01-resource-group/resource-group.yaml
+git add -A
+git commit -m "cleanup: remove tutorial resource group"
+git push
+
+# Verify deletion in Azure (after ArgoCD sync)
+az group show --name tutorial-rg-001
+# Expected: ResourceGroupNotFound error after GitOps cleanup
+```
+
+**Cost Note:** Resource Groups themselves don't incur charges, but always clean up resources to develop good habits for more expensive resources like databases and compute instances.
+
 ### Files Created
 
 ```

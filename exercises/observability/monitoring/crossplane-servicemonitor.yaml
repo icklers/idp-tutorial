@@ -1,0 +1,36 @@
+# File: exercises/observability/monitoring/crossplane-servicemonitor.yaml
+# Description: ServiceMonitor to scrape Crossplane metrics
+# Tutorial Reference: docs/observability/02-monitoring-with-prometheus.md
+# Prerequisites: Prometheus Operator installed
+
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: crossplane-metrics
+  namespace: crossplane-system
+  labels:
+    app: crossplane
+spec:
+  selector:
+    matchLabels:
+      app: crossplane
+  endpoints:
+  - port: http-metrics
+    path: /metrics
+    interval: 30s
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: crossplane-rbac-manager-metrics
+  namespace: crossplane-system
+  labels:
+    app: crossplane-rbac-manager
+spec:
+  selector:
+    matchLabels:
+      app: crossplane-rbac-manager
+  endpoints:
+  - port: http-metrics
+    path: /metrics
+    interval: 30s

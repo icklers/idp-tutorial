@@ -1,0 +1,55 @@
+# File: exercises/gitops-fundamentals/workflow-patterns/github-actions/drift-detection.yml
+# Description: GitHub Actions workflow for detecting environment drift
+# Tutorial Reference: docs/gitops-fundamentals/03-workflow-patterns.md
+# Prerequisites: ArgoCD CLI access, Slack webhook configured
+
+name: Environment Drift Detection
+on:
+  schedule:
+    - cron: '0 8 * * *'  # Daily at 8 AM
+
+jobs:
+  detect-drift:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup ArgoCD CLI
+      run: |
+        curl -sSL -o argocd-linux-amd64 https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
+        sudo install -m 555 argocd-linux-amd64 /usr/local/bin/argocd
+        rm argocd-linux-amd64
+    
+    - name: Login to ArgoCD
+      run: |
+        argocd login ${{ secrets.ARGOCD_SERVER }} \
+          --username ${{ secrets.ARGOCD_USERNAME }} \
+          --password ${{ secrets.ARGOCD_PASSWORD }} \
+          --insecure
+    
+    - name: Check Dev Environment Drift
+      run: |
+        # Compare desired state vs actual state
+        argocd app diff infrastructure-dev --refresh
+        
+        # Check for unexpected manual changes
+        kubectl get all -n dev -o yaml | \
+          grep -E "(kubectl.kubernetes.io/last-applied-configuration|argocd.argoproj.io/)" | \
+          grep -v "argocd.argoproj.io/managed-by" && \
+          echo "⚠️ Manual changes detected in dev environment"
+    
+    - name: Check Staging Environment Drift
+      run: |
+        argocd app diff infrastructure-staging --refresh
+    
+    - name: Check Production Environment Drift
+      run: |
+        argocd app diff infrastructure-production --refresh
+    
+    - name: Slack Alert on Drift
+      if: failure()
+      uses: 8398a7/action-slack@v3
+      with:
+        status: failure
+        text: "🚨 Environment drift detected! Manual intervention may be needed."
+        webhook_url: ${{ secrets.SLACK_WEBHOOK }}

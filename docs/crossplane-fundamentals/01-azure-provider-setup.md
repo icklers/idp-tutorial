@@ -242,25 +242,22 @@ Replace the placeholder with your actual repository URL:
 sed -i "s|__YOUR_PLATFORM_GITOPS_REPO_URL__|$PLATFORM_GITOPS_REPO_URL|g" platform-core/applications/azure-provider.yaml
 ```
 
-## Step 8: Commit and Deploy
+## Step 8: Deploy Configuration
 
-Now let's commit our changes and watch GitOps in action:
+Now let's deploy our changes through GitOps:
 
 ```bash
-# Add all new files
+# Add the new provider configuration
 git add platform-core/
 
-# Commit changes
-git commit -m "feat: add Azure provider with secure credentials
-
-- Install Upbound Azure provider v0.43.0
-- Configure service principal authentication via Sealed Secrets
-- Deploy via ArgoCD applications with proper sync waves
-- Follows GitOps and security best practices"
+# Simple commit for configuration addition
+git commit -m "feat: add Azure provider with secure credentials"
 
 # Push to trigger GitOps deployment
 git push
 ```
+
+**Note:** This is a simple configuration addition using direct git operations. For complex changes requiring review (like environment promotions), we would use PR workflows with `gh` CLI.
 
 ## Step 9: Deploy ArgoCD Applications
 

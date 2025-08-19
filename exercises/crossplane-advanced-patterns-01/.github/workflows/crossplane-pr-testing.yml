@@ -1,0 +1,48 @@
+name: Crossplane Infrastructure PR Testing
+on:
+  pull_request:
+    paths: ['environments/dev/infrastructure/**']
+
+jobs:
+  test-crossplane-infrastructure:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup kubectl and ArgoCD CLI
+      uses: azure/setup-kubectl@v3
+      
+    - name: Create PR Environment Suffix
+      run: |
+        export PR_SUFFIX="pr-${{ github.event.number }}"
+        echo "PR_SUFFIX=${PR_SUFFIX}" >> $GITHUB_ENV
+        
+    - name: Deploy PR-specific Infrastructure
+      run: |
+        # Create PR-specific version of the environment
+        sed "s/name: alice-dev/name: alice-dev-${PR_SUFFIX}/" \
+            environments/dev/infrastructure/alice-dev.yaml | \
+        sed "s/namespace: dev/namespace: dev-pr-${{ github.event.number }}/" | \
+        kubectl apply -f -
+        
+        # Wait for Crossplane resources to be ready
+        kubectl wait --for=condition=Ready \
+          xdevenvironment/alice-dev-${PR_SUFFIX} \
+          -n dev-pr-${{ github.event.number }} \
+          --timeout=600s
+    
+    - name: Validate Infrastructure
+      run: |
+        # Check that Crossplane created all expected resources
+        kubectl get resourcegroups,virtualnetworks \
+          -n dev-pr-${{ github.event.number }} \
+          -l crossplane.io/composite=alice-dev-${PR_SUFFIX}
+        
+        # Verify Azure resources exist (optional - requires Azure CLI)
+        # az group show --name alice-dev-${PR_SUFFIX}-rg --output table
+    
+    - name: Cleanup PR Environment
+      if: always()
+      run: |
+        # Clean up PR-specific resources
+        kubectl delete namespace dev-pr-${{ github.event.number }} --ignore-not-found=true

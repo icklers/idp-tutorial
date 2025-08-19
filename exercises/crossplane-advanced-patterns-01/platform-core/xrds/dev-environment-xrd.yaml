@@ -1,0 +1,76 @@
+apiVersion: apiextensions.crossplane.io/v2
+kind: CompositeResourceDefinition
+metadata:
+  name: xdevenvironments.platform.tutorial.com
+  labels:
+    app: crossplane-tutorial
+    component: xrd
+spec:
+  group: platform.tutorial.com
+  names:
+    kind: XDevEnvironment
+    plural: xdevenvironments
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    served: true
+    referenceable: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          spec:
+            type: object
+            properties:
+              parameters:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    description: "Name of the development environment"
+                    pattern: '^[a-z0-9-]+$'
+                    minLength: 3
+                    maxLength: 20
+                  region:
+                    type: string
+                    description: "Azure region for deployment"
+                    default: "eastus"
+                    enum: ["eastus", "westus2", "eastus2", "westeurope"]
+                  resourceGroupLocation:
+                    type: string
+                    description: "Specific location for Azure resource group"
+                    default: "East US"
+                  tags:
+                    type: object
+                    description: "Additional tags for resources"
+                    additionalProperties:
+                      type: string
+                required:
+                - name
+              crossplane:
+                type: object
+                properties:
+                  compositionRef:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                    required:
+                    - name
+                required:
+                - compositionRef
+            required:
+            - parameters
+            - crossplane
+          status:
+            type: object
+            properties:
+              resourceGroupId:
+                type: string
+                description: "Azure Resource Group ID"
+              virtualNetworkId:
+                type: string
+                description: "Azure Virtual Network ID"
+              ready:
+                type: boolean
+                description: "Environment is ready for use"

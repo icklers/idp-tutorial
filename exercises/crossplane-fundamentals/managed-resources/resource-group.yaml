@@ -1,0 +1,24 @@
+# File: exercises/crossplane-fundamentals/managed-resources/resource-group.yaml
+# Description: First Azure Resource Group managed resource example
+# Tutorial Reference: docs/crossplane-fundamentals/02-first-managed-resource.md
+# Prerequisites: Azure provider installed and configured
+
+apiVersion: azure.upbound.io/v1beta1
+kind: ResourceGroup
+metadata:
+  name: tutorial-rg-001
+  namespace: tutorial
+  labels:
+    app: crossplane-tutorial
+    component: resource-group
+    environment: tutorial
+spec:
+  forProvider:
+    location: East US
+    tags:
+      environment: tutorial
+      managed-by: crossplane
+      purpose: learning
+      created-by: crossplane-tutorial
+  providerConfigRef:
+    name: default

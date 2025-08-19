@@ -1,0 +1,14 @@
+# File: exercises/crossplane-fundamentals/azure-provider/azure-provider.yaml
+# Description: Azure provider installation for Crossplane
+# Tutorial Reference: docs/crossplane-fundamentals/01-azure-provider-setup.md
+# Prerequisites: Crossplane installed
+
+apiVersion: pkg.crossplane.io/v1
+kind: Provider
+metadata:
+  name: provider-family-azure
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+spec:
+  package: xpkg.upbound.io/upbound/provider-family-azure:v2.0.0
+  packagePullPolicy: IfNotPresent

@@ -1,0 +1,126 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: dev-environment-azure
+  labels:
+    provider: azure
+    service: development
+    app: crossplane-tutorial
+spec:
+  compositeTypeRef:
+    apiVersion: platform.tutorial.com/v1alpha1
+    kind: XDevEnvironment
+  
+  mode: Pipeline
+  pipeline:
+  - step: patch-and-transform
+    functionRef:
+      name: function-patch-and-transform
+    input:
+      apiVersion: pt.fn.crossplane.io/v1beta1
+      kind: Resources
+      resources:
+      - name: resource-group
+        base:
+          apiVersion: azure.upbound.io/v1beta1
+          kind: ResourceGroup
+          spec:
+            forProvider:
+              tags:
+                managed-by: crossplane
+                environment: development
+                created-by: crossplane-tutorial
+        patches:
+        # Copy environment name to resource group name
+        - type: FromCompositeFieldPath
+          fromFieldPath: spec.parameters.name
+          toFieldPath: metadata.name
+          transforms:
+          - type: string
+            string:
+              fmt: "%s-rg"
+        
+        # Copy region to Azure location
+        - type: FromCompositeFieldPath
+          fromFieldPath: spec.parameters.resourceGroupLocation
+          toFieldPath: spec.forProvider.location
+        
+        # Add environment name to tags
+        - type: FromCompositeFieldPath
+          fromFieldPath: spec.parameters.name
+          toFieldPath: spec.forProvider.tags["environment-name"]
+        
+        # Merge user-provided tags
+        - type: FromCompositeFieldPath
+          fromFieldPath: spec.parameters.tags
+          toFieldPath: spec.forProvider.tags
+          policy:
+            mergeOptions:
+              keepMapValues: true
+        
+        # Report back the resource group ID
+        - type: ToCompositeFieldPath
+          fromFieldPath: status.atProvider.id
+          toFieldPath: status.resourceGroupId
+        
+        # Set readiness condition
+        - type: ToCompositeFieldPath
+          fromFieldPath: status.conditions[?(@.type=="Ready")].status
+          toFieldPath: status.ready
+          transforms:
+          - type: convert
+            convert:
+              toType: bool
+      
+      - name: virtual-network
+        base:
+          apiVersion: network.azure.upbound.io/v1beta1
+          kind: VirtualNetwork
+          spec:
+            forProvider:
+              addressSpace: ["10.0.0.0/16"]
+              tags:
+                managed-by: crossplane
+                environment: development
+                resource-type: virtual-network
+        patches:
+        # Copy environment name to VNet name
+        - type: FromCompositeFieldPath
+          fromFieldPath: spec.parameters.name
+          toFieldPath: metadata.name
+          transforms:
+          - type: string
+            string:
+              fmt: "%s-vnet"
+        
+        # Reference the resource group by name
+        - type: FromCompositeFieldPath
+          fromFieldPath: spec.parameters.name
+          toFieldPath: spec.forProvider.resourceGroupName
+          transforms:
+          - type: string
+            string:
+              fmt: "%s-rg"
+        
+        # Copy region to Azure location
+        - type: FromCompositeFieldPath
+          fromFieldPath: spec.parameters.resourceGroupLocation
+          toFieldPath: spec.forProvider.location
+        
+        # Add environment name to tags
+        - type: FromCompositeFieldPath
+          fromFieldPath: spec.parameters.name
+          toFieldPath: spec.forProvider.tags["environment-name"]
+        
+        # Merge user-provided tags
+        - type: FromCompositeFieldPath
+          fromFieldPath: spec.parameters.tags
+          toFieldPath: spec.forProvider.tags
+          policy:
+            mergeOptions:
+              keepMapValues: true
+        
+        # Report back the VNet ID
+        - type: ToCompositeFieldPath
+          fromFieldPath: status.atProvider.id
+          toFieldPath: status.virtualNetworkId

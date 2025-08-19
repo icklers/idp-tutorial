@@ -1,0 +1,36 @@
+# File: exercises/crossplane-fundamentals/managed-resources/resource-group-application.yaml
+# Description: ArgoCD Application to deploy the Azure Resource Group
+# Tutorial Reference: docs/crossplane-fundamentals/02-first-managed-resource.md
+# Prerequisites: ArgoCD installed, repository URL updated
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: azure-resource-group-tutorial
+  namespace: argocd
+  labels:
+    app: crossplane-tutorial
+    component: azure-resources
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: __YOUR_PLATFORM_GITOPS_REPO_URL__
+    targetRevision: HEAD
+    path: platform-core/azure/01-resource-group
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: tutorial
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+  info:
+    - name: 'Purpose'
+      value: 'Deploy tutorial Azure Resource Group via Crossplane'
+    - name: 'Resource Type'
+      value: 'Azure Resource Group'
