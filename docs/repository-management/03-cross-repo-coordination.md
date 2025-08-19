@@ -1,6 +1,6 @@
 # 03: Cross-Repo Coordination with ArgoCD
 
-Our multi-repo strategy is powerful, but it introduces a new challenge: how do we make all these repositories work together? How does ArgoCD discover and deploy all the Compositions, Claims, and Applications defined across our entire organization?
+Our multi-repo strategy is powerful, but it introduces a new challenge: how do we make all these repositories work together? How does ArgoCD discover and deploy all the Compositions, Composite Resources, and Applications defined across our entire organization?
 
 The answer lies back in the **Platform Core ApplicationSet** pattern.
 
@@ -45,7 +45,7 @@ spec:
 
 ### `infra-dev.yaml`
 
-This file tells ArgoCD to deploy the infrastructure claims for the `dev` environment.
+This file tells ArgoCD to deploy the infrastructure Composite Resources for the `dev` environment.
 
 ```yaml
 apiVersion: argoproj.io/v1alpha1
@@ -61,14 +61,14 @@ spec:
     path: './'
   destination:
     server: https://kubernetes.default.svc
-    namespace: crossplane-claims # We deploy claims to a dedicated namespace
+    namespace: default # Composite Resources are now namespaced in v2
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
 ```
 
-This is a more traditional ArgoCD Application, pointing to a single repository that contains all the infrastructure claims for the development environment.
+This is a more traditional ArgoCD Application, pointing to a single repository that contains all the infrastructure Composite Resources for the development environment.
 
 ## The Complete Workflow
 
@@ -79,23 +79,28 @@ Now, let's put it all together.
     -   They define the XRD and Composition for a highly-available PostgreSQL cluster.
     -   They push the repository to the `your-org` GitHub organization.
     -   ArgoCD's `platform-compositions` app automatically discovers the new repo and installs the Composition into the cluster.
-    -   The new CRD, `CompositePostgresHA`, is now available in the Kubernetes API.
+    -   The new CRD, `XPostgreSQLHA`, is now available in the Kubernetes API.
 
 2.  **A Developer needs a new HA PostgreSQL database for their project.**
     -   They open a pull request against the `infra-dev` repository.
-    -   They add a new file, `my-project-db.yaml`, containing the claim:
+    -   They add a new file, `my-project-db.yaml`, containing the Composite Resource:
         ```yaml
         apiVersion: database.example.org/v1alpha1
-        kind: PostgresHA
+        kind: XPostgreSQLHA
         metadata:
           name: my-project-db
+          namespace: default
         spec:
-          storageGB: 50
-          region: us-east-1
+          parameters:
+            storageGB: 50
+            region: us-east-1
+          crossplane:
+            compositionRef:
+              name: azure-postgresql-ha
         ```
     -   The pull request is reviewed and merged by the DevOps team.
     -   ArgoCD's `infra-dev` app sees the new file and applies it to the cluster.
-    -   Crossplane sees the new `PostgresHA` claim.
+    -   Crossplane sees the new `XPostgreSQLHA` Composite Resource.
     -   It finds the `composition-postgres-ha` Composition and starts provisioning all the necessary cloud resources (e.g., a primary database, a read replica, firewall rules, etc.).
 
 This elegant workflow allows for seamless coordination across multiple teams and repositories, all orchestrated through Git and ArgoCD.

@@ -17,7 +17,7 @@ Conduct comprehensive content review and editing that includes:
 5. Learning experience optimization for the target audience
 6. Identification and resolution of potential blockers or confusion points
 7. Verification of hands-on exercises and their expected outcomes
-8. **Generate a dedicated `tutorial-review-improvements.md` file with user approval sections**
+8. **Generate a dedicated `.idea/review-improvements.md` file with user approval sections**
 9. **Provide exact file paths, line numbers, and specific before/after examples for each proposed change**
 10. **Create an approval workflow that allows users to review and approve/reject each suggestion individually**
 
@@ -27,20 +27,21 @@ Conduct comprehensive content review and editing that includes:
 - Comprehensive Crossplane v2 + GitOps learning materials
 - MkDocs-structured documentation
 - Multi-repository GitOps patterns and workflows
-- Provider-specific examples (Azure, Hetzner, optionally GKE - kept separate)
-- DevBox + Nix Package Manager development environment
+- Provider-specific examples (Azure, optionally Google Cloud)
+- DevBox as development environment
 - Chainguard.dev container security integration
 - ArgoCD-based continuous deployment workflows
+- Sealed Secrets for sensitive data management
 
 **Target Learner Profile:**
-- Senior DevOps engineer transitioning to Crossplane v2 + GitOps
+- DevOps Engineer transitioning to Crossplane v2 + GitOps
 - Strong Kubernetes and cloud architecture background
 - Using Linux (Homebrew) and macOS development environments
-- Working with Hetzner, Microsoft Azure, and optionally Google Cloud
+- Working with  Microsoft Azure, and optionally Google Cloud
 - Expects production-ready, enterprise-quality guidance
 
 **Companion Learning Assistant:**
-- GitMiyagi - Interactive tutor with Miyagi-style teaching philosophy
+- Miyagi - Interactive tutor with Miyagi-style teaching philosophy
 - Memory-persistent learning companion
 - Provides personalized guidance and custom exercises
 
@@ -56,7 +57,7 @@ Conduct comprehensive content review and editing that includes:
    - Validate multi-repository strategy explanation and implementation
 
 2. **Learning Path Coherence:**
-   - Analyze the "first this, then that" progression aligns with GitMiyagi's philosophy
+   - Analyze the "first this, then that" progression aligns with Miyagi's philosophy
    - Verify that each section builds appropriately on previous knowledge
    - Check for circular dependencies or forward references without context
    - Ensure provider-specific content remains properly separated
@@ -76,7 +77,7 @@ Conduct comprehensive content review and editing that includes:
    - Ensure secret management and security practices are production-ready
 
 5. **Development Environment Technical Review:**
-   - Verify DevBox and Nix configuration accuracy
+   - Verify DevBox configuration accuracy
    - Check toolchain installation instructions for both Linux and macOS
    - Validate Chainguard.dev container image usage and security practices
    - Ensure all command examples and scripts are functional
@@ -90,7 +91,7 @@ Conduct comprehensive content review and editing that includes:
    - Validate that similar concepts are explained consistently across sections
 
 7. **Code Example Consistency:**
-   - Verify all YAML configurations follow consistent formatting and style
+   - Verify all code snippets, examples and manifests follow consistent formatting and style
    - Check that example names, namespaces, and resource references align
    - Ensure environment variables and configuration values are consistent
    - Validate that cleanup instructions match the resources created
@@ -125,16 +126,16 @@ Conduct comprehensive content review and editing that includes:
 
 ## Key Constraints & Rules
 * **Technical Accuracy:** All technical content must be verified against current Crossplane v2 and ArgoCD documentation
-* **Provider Separation:** Maintain strict separation of Azure, Hetzner, and GKE examples - no mixing
+* **Provider Separation:** Maintain strict separation of Azure, and Google Cloud examples - no mixing
 * **GitOps Principles:** Ensure all workflows adhere to GitOps principles (declarative, versioned, automated, monitored)
-* **Security First:** Verify that all security practices, especially Chainguard.dev usage, are correctly implemented
+* **Security First:** Verify that all security practices, are correctly implemented
 * **Reproducibility:** Ensure all examples and exercises are reproducible in the specified development environment
-* **Learning Continuity:** Maintain logical flow that supports GitMiyagi's patient, progressive teaching philosophy
+* **Learning Continuity:** Maintain logical flow that supports Miyagi's patient, progressive teaching philosophy
 * **Enterprise Readiness:** All content must reflect production-ready practices and enterprise standards
 
 ## Output Requirements
 * **Format:** 
-  - Generate a dedicated markdown file named `tutorial-review-improvements.md`
+  - Generate a dedicated markdown file named `.idea/review-improvements.md`
   - Create structured review report with specific, actionable feedback
   - Include exact file paths, line numbers, and specific changes needed
   - Provide before/after code examples where applicable
@@ -169,15 +170,15 @@ Conduct comprehensive content review and editing that includes:
   - Before/after examples are provided where applicable
 * **Confidence & Assumptions:** Clearly state confidence level for rapidly-evolving features or when making assumptions about tutorial implementation details
 * **Iteration:** Be prepared to refine analysis based on author feedback or additional context about learning objectives
-* **File Generation:** Always create the `tutorial-review-improvements.md` file as the primary deliverable, not just a report in the conversation
+* **File Generation:** Always create the `.idea/review-improvements.md` file as the primary deliverable, not just a report in the conversation
 
 ## Review Report Structure Template
 
-```markdown
+````markdown
 # Tutorial Content Review Report
-> **File:** `tutorial-review-improvements.md`
+> **File:** `.idea/review-improvements.md`
 > **Generated:** [Current Date/Time]
-> **Reviewer:** Technical Content Editor
+> **Reviewer:** Technical Content Editor (AI)
 
 ## Executive Summary
 - Overall readiness assessment: [READY/NEEDS WORK/MAJOR REVISION]
@@ -357,7 +358,7 @@ Conduct comprehensive content review and editing that includes:
 2. Implementation script processes approved changes
 3. Final verification testing performed
 4. Tutorial published or sent for additional review rounds
-```
+````
 
 ## Critical Evaluation & Alternative Perspectives
 * Critically assess whether the tutorial truly serves its intended audience

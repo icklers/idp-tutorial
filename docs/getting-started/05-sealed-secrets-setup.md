@@ -90,8 +90,8 @@ gh repo sync
 #### 1.3 Watch the deployment
 
 ```bash
-kubectl get applications -n argocd sealed-secrets
-kubectl get pods -n sealed-secrets -l app.kubernetes.io/name=sealed-secrets
+kubectl get applications -n argocd sealed-secrets-controller
+kubectl get pods -n sealed-secrets -l app.kubernetes.io/name=sealed-secrets-controller
 ```
 
 ### 2. Install kubeseal CLI Tool
@@ -130,10 +130,10 @@ sudo install -m 755 kubeseal /usr/local/bin/kubeseal
 
 ```bash
 # Verify the sealed secrets controller is running
-kubectl get pods -n kube-system -l app.kubernetes.io/name=sealed-secrets
+kubectl get pods -n sealed-secrets -l app.kubernetes.io/name=sealed-secrets
 
 # Check the controller logs
-kubectl logs -n kube-system -l app.kubernetes.io/name=sealed-secrets
+kubectl logs -n sealed-secrets -l app.kubernetes.io/name=sealed-secrets
 
 # Verify the CRD is installed
 kubectl get crd sealedsecrets.bitnami.com
@@ -143,7 +143,7 @@ kubectl get crd sealedsecrets.bitnami.com
 
 ```bash
 # Test kubeseal CLI can communicate with the controller
-kubeseal --fetch-cert --controller-namespace=kube-system --controller-name=sealed-secrets-controller > public-cert.pem
+kubeseal --fetch-cert --controller-namespace=sealed-secrets --controller-name=sealed-secrets-controller > public-cert.pem
 
 # Verify the certificate was retrieved
 cat public-cert.pem
@@ -227,7 +227,7 @@ Now that Sealed Secrets is installed, update your platform repository structure:
 
 ```bash
 # Add to your platform repository
-git add platform-core/sealed-secrets/sealed-secrets-controller.yaml
+git add platform-core/sealed-secrets-controller.yaml
 git commit -m "feat: add sealed secrets controller for secure secret management"
 git push
 ```
@@ -238,13 +238,13 @@ Check that ArgoCD has successfully deployed Sealed Secrets:
 
 ```bash
 # Check ArgoCD application status
-argocd app get sealed-secrets
+argocd app get sealed-secrets-controller
 
 # Verify in ArgoCD UI
 kubectl port-forward svc/argocd-server -n argocd 8080:443
 ```
 
-Log in to ArgoCD at https://localhost:8080 and verify the `sealed-secrets` application is healthy and synced.
+Log in to ArgoCD at https://localhost:8080 and verify the `sealed-secrets-controller` application is healthy and synced.
 
 ## Best Practices
 
@@ -274,7 +274,7 @@ kubeseal --scope strict -o yaml < secret.yaml > sealed-secret.yaml
 
 ```bash
 # Backup the encryption certificate (store securely!)
-kubectl get secret -n kube-system sealed-secrets-key -o yaml > sealed-secrets-master-key.yaml
+kubectl get secret -n sealed-secrets sealed-secrets-key -o yaml > sealed-secrets-master-key.yaml
 
 # For disaster recovery, you can restore the key:
 # kubectl apply -f sealed-secrets-master-key.yaml
@@ -328,24 +328,24 @@ git push
 **1. kubeseal can't connect to controller:**
 ```bash
 # Check if controller is running
-kubectl get pods -n kube-system -l app.kubernetes.io/name=sealed-secrets
+kubectl get pods -n sealed-secrets -l app.kubernetes.io/name=sealed-secrets
 
 # Check service endpoint
-kubectl get svc -n kube-system sealed-secrets-controller
+kubectl get svc -n sealed-secrets sealed-secrets-controller
 ```
 
 **2. Certificate fetch fails:**
 ```bash
 # Explicitly specify controller details
 kubeseal --fetch-cert \
-  --controller-namespace=kube-system \
+  --controller-namespace=sealed-secrets \
   --controller-name=sealed-secrets-controller
 ```
 
 **3. Sealed secret not decrypting:**
 ```bash
 # Check controller logs
-kubectl logs -n kube-system -l app.kubernetes.io/name=sealed-secrets
+kubectl logs -n sealed-secrets -l app.kubernetes.io/name=sealed-secrets
 
 # Verify sealed secret format
 kubectl describe sealedsecret <secret-name>

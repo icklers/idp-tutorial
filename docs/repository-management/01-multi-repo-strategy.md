@@ -14,14 +14,14 @@ We propose a three-tiered repository structure:
     -   **Audience:** Platform Engineering team.
 
 2.  **Infrastructure-as-Code (IaC) Repositories:** Each of these repositories defines a specific piece of infrastructure using the Compositions from the platform repo.
-    -   Contains Crossplane Claims (e.g., `CompositePostgresInstance`, `CompositeAKSCluster`).
+    -   Contains Crossplane Composite Resources (XRs) (e.g., `XPostgreSQLInstance`, `XAKSCluster`).
     -   One repository per environment (e.g., `infra-dev`, `infra-staging`, `infra-prod`).
     -   **Audience:** DevOps / SRE / Platform team.
 
 3.  **Application Repositories:** These are the standard repositories containing your microservice code.
     -   Contains application source code (Go, Python, Java, etc.).
     -   Contains Kubernetes manifests for deploying the application (Deployments, Services, Ingress, etc.).
-    -   May contain a Crossplane Claim if the application requires its own dedicated infrastructure (e.g., a specific database).
+    -   May contain a Crossplane Composite Resource if the application requires its own dedicated infrastructure (e.g., a specific database).
     -   **Audience:** Development teams.
 
 ## Why Multi-Repo?
@@ -35,9 +35,9 @@ We propose a three-tiered repository structure:
 
 ## The Role of the Platform Repo
 
-This repository, `crossplane-gitops-tutorial`, serves as the **Platform Repository**. It is the heart of our system. The Crossplane Compositions we define here are published to the Kubernetes API server as new CRDs (e.g., `CompositePostgresInstance.example.org`).
+This repository, `crossplane-gitops-tutorial`, serves as the **Platform Repository**. It is the heart of our system. The Crossplane Compositions we define here are published to the Kubernetes API server as new CRDs (e.g., `XPostgreSQLInstance.example.org`).
 
-Other repositories can then create instances of these CRDs (Claims) without needing to know the complex implementation details. They are consuming the API provided by the platform.
+Other repositories can then create instances of these CRDs (Composite Resources) without needing to know the complex implementation details. They are consuming the API provided by the platform.
 
 In the next section, we will look at how to standardize the creation of these repositories using templates.
 
