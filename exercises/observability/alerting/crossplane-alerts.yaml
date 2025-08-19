@@ -1,0 +1,59 @@
+# File: exercises/observability/alerting/crossplane-alerts.yaml
+# Description: Prometheus alerting rules for Crossplane monitoring
+# Tutorial Reference: docs/observability/03-alerting.md
+# Prerequisites: Prometheus Operator installed
+
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: crossplane-alerts
+  namespace: crossplane-system
+  labels:
+    app: crossplane
+    prometheus: kube-prometheus
+    role: alert-rules
+spec:
+  groups:
+  - name: crossplane.rules
+    rules:
+    - alert: CrossplaneReconciliationErrors
+      expr: rate(crossplane_managed_resource_reconcile_errors_total[5m]) > 0
+      for: 5m
+      labels:
+        severity: critical
+        component: crossplane
+      annotations:
+        summary: "Crossplane is experiencing reconciliation errors"
+        description: "The rate of reconciliation errors for managed resources is greater than 0. This indicates a problem with one or more providers or managed resources."
+        runbook_url: "https://docs.crossplane.io/latest/troubleshooting/"
+    
+    - alert: CrossplaneProviderNotReady
+      expr: crossplane_provider_ready == 0
+      for: 10m
+      labels:
+        severity: warning
+        component: crossplane
+      annotations:
+        summary: "Crossplane provider is not ready"
+        description: "Provider {{ $labels.provider }} has been in a not-ready state for more than 10 minutes."
+        runbook_url: "https://docs.crossplane.io/latest/troubleshooting/"
+    
+    - alert: CrossplaneReconciliationDurationHigh
+      expr: histogram_quantile(0.95, sum(rate(crossplane_managed_resource_reconcile_duration_seconds_bucket[5m])) by (le)) > 300
+      for: 10m
+      labels:
+        severity: warning
+        component: crossplane
+      annotations:
+        summary: "Crossplane reconciliation duration is high"
+        description: "95th percentile of reconciliation duration is {{ $value }} seconds, which is above the 300 second threshold."
+    
+    - alert: CrossplaneManagedResourceNotReady
+      expr: crossplane_managed_resource_ready == 0
+      for: 30m
+      labels:
+        severity: warning
+        component: crossplane
+      annotations:
+        summary: "Crossplane managed resource not ready"
+        description: "Managed resource {{ $labels.name }} in namespace {{ $labels.namespace }} has been in a not-ready state for more than 30 minutes."

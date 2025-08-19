@@ -1,0 +1,59 @@
+# File: exercises/observability/alerting/argocd-alerts.yaml
+# Description: Prometheus alerting rules for ArgoCD monitoring
+# Tutorial Reference: docs/observability/03-alerting.md
+# Prerequisites: Prometheus Operator installed
+
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: argocd-alerts
+  namespace: argocd
+  labels:
+    app: argocd
+    prometheus: kube-prometheus
+    role: alert-rules
+spec:
+  groups:
+  - name: argocd.rules
+    rules:
+    - alert: ArgoCDAppNotHealthy
+      expr: argocd_app_info{health_status!="Healthy"} == 1
+      for: 15m
+      labels:
+        severity: warning
+        component: argocd
+      annotations:
+        summary: "ArgoCD application is not healthy"
+        description: "ArgoCD application {{ $labels.name }} in namespace {{ $labels.namespace }} has been in {{ $labels.health_status }} state for more than 15 minutes."
+        runbook_url: "https://argo-cd.readthedocs.io/en/stable/troubleshooting/"
+    
+    - alert: ArgoCDAppNotSynced
+      expr: argocd_app_info{sync_status!="Synced"} == 1
+      for: 30m
+      labels:
+        severity: warning
+        component: argocd
+      annotations:
+        summary: "ArgoCD application is not synced"
+        description: "ArgoCD application {{ $labels.name }} in namespace {{ $labels.namespace }} has been in {{ $labels.sync_status }} state for more than 30 minutes."
+        runbook_url: "https://argo-cd.readthedocs.io/en/stable/troubleshooting/"
+    
+    - alert: ArgoCDServerDown
+      expr: up{job="argocd-server-metrics"} == 0
+      for: 5m
+      labels:
+        severity: critical
+        component: argocd
+      annotations:
+        summary: "ArgoCD server is down"
+        description: "ArgoCD server has been down for more than 5 minutes."
+    
+    - alert: ArgoCDRepoServerDown
+      expr: up{job="argocd-repo-server-metrics"} == 0
+      for: 5m
+      labels:
+        severity: critical
+        component: argocd
+      annotations:
+        summary: "ArgoCD repo server is down"
+        description: "ArgoCD repo server has been down for more than 5 minutes."

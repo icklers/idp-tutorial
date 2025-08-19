@@ -1,0 +1,26 @@
+# File: exercises/gitops-fundamentals/workflow-patterns/examples/redis-cache-production.yaml
+# Description: Example Redis cache configuration for production environment with advanced features
+# Tutorial Reference: docs/gitops-fundamentals/03-workflow-patterns.md
+# Prerequisites: Redis XRD and Composition available in cluster
+
+apiVersion: platform.company.com/v1alpha1
+kind: XRedisCache
+metadata:
+  name: user-session-cache
+  namespace: production
+spec:
+  parameters:
+    size: large
+    version: "7.0"
+    backup: true
+    highAvailability: true
+    memory: "8Gi"
+    maxMemoryPolicy: "allkeys-lru"
+    rolloutStrategy:
+      type: canary
+      canarySteps:
+      - weight: 10   # 10% of traffic
+        duration: "5m"
+      - weight: 50   # 50% of traffic  
+        duration: "10m"
+      - weight: 100  # Full rollout

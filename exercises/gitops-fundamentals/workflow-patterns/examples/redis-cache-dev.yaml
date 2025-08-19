@@ -1,0 +1,15 @@
+# File: exercises/gitops-fundamentals/workflow-patterns/examples/redis-cache-dev.yaml
+# Description: Example Redis cache configuration for development environment
+# Tutorial Reference: docs/gitops-fundamentals/03-workflow-patterns.md
+# Prerequisites: Redis XRD and Composition available in cluster
+
+apiVersion: platform.company.com/v1alpha1
+kind: XRedisCache
+metadata:
+  name: user-session-cache
+  namespace: dev
+spec:
+  parameters:
+    size: small
+    version: "7.0"
+    backup: false

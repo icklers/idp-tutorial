@@ -1,0 +1,9 @@
+# File: exercises/getting-started/cluster-setup/kind-cluster.yaml
+# Description: Kind cluster configuration for local development
+# Tutorial Reference: docs/getting-started/03-local-cluster-setup.md
+# Prerequisites: Kind CLI installed via devbox
+
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+- role: control-plane

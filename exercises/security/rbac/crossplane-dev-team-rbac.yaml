@@ -1,0 +1,86 @@
+# File: exercises/security/rbac/crossplane-dev-team-rbac.yaml
+# Description: Kubernetes RBAC for development team to manage Crossplane claims
+# Tutorial Reference: docs/security/03-rbac.md
+# Prerequisites: Crossplane installed, dev team users/groups defined
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: dev-team-claim-creator
+  namespace: default
+  labels:
+    app: crossplane-tutorial
+    component: rbac
+    team: dev
+rules:
+# Allow creating and managing database claims
+- apiGroups:
+  - "database.example.org"
+  resources:
+  - "mysqlinstances"
+  - "postgresqlinstances"
+  verbs:
+  - "create"
+  - "get"
+  - "list"
+  - "watch"
+  - "delete"
+  - "patch"
+  - "update"
+# Allow creating and managing cache claims
+- apiGroups:
+  - "cache.example.org"
+  resources:
+  - "rediscaches"
+  verbs:
+  - "create"
+  - "get"
+  - "list"
+  - "watch"
+  - "delete"
+  - "patch"
+  - "update"
+# Allow reading secrets created by Crossplane
+- apiGroups:
+  - ""
+  resources:
+  - "secrets"
+  verbs:
+  - "get"
+  - "list"
+  - "watch"
+# Allow reading events for troubleshooting
+- apiGroups:
+  - ""
+  resources:
+  - "events"
+  verbs:
+  - "get"
+  - "list"
+  - "watch"
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: dev-team-claim-binding
+  namespace: default
+  labels:
+    app: crossplane-tutorial
+    component: rbac
+    team: dev
+subjects:
+# Bind to specific users
+- kind: User
+  name: alice@company.com
+  apiGroup: rbac.authorization.k8s.io
+- kind: User
+  name: bob@company.com
+  apiGroup: rbac.authorization.k8s.io
+# Bind to groups (if using OIDC/SSO)
+- kind: Group
+  name: dev-team
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: dev-team-claim-creator
+  apiGroup: rbac.authorization.k8s.io

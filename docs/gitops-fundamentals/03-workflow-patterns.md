@@ -134,6 +134,18 @@ spec:
       selfHeal: true
 ```
 
+> 📁 **Exercise Files**: Available at [`exercises/gitops-fundamentals/workflow-patterns/argocd-app-infrastructure-dev.yaml`](../../exercises/gitops-fundamentals/workflow-patterns/argocd-app-infrastructure-dev.yaml)
+>
+> ```bash
+> # Copy into your GitOps repo/Application folder
+> user@host idp-tutorial> $ cp exercises/gitops-fundamentals/workflow-patterns/argocd-app-infrastructure-dev.yaml gitops-bootstrap/argocd/
+> 
+> # Commit and push so ArgoCD reconciles
+> user@host idp-tutorial> $ git add gitops-bootstrap/argocd/argocd-app-infrastructure-dev.yaml
+> user@host idp-tutorial> $ git commit -m "gitops: add dev infra ArgoCD Application"
+> user@host idp-tutorial> $ git push
+> ```
+
 #### Step 4: Environment Promotion via PR
 **Controlled promotion** using internal PRs:
 
@@ -407,6 +419,18 @@ spec:
         syncOptions:
         - CreateNamespace=true
 ```
+
+> 📁 **Exercise Files**: Available at [`exercises/gitops-fundamentals/workflow-patterns/applicationset-application-infrastructure.yaml`](../../exercises/gitops-fundamentals/workflow-patterns/applicationset-application-infrastructure.yaml)
+>
+> ```bash
+> # Copy into your GitOps repo/ApplicationSets folder
+> user@host idp-tutorial> $ cp exercises/gitops-fundamentals/workflow-patterns/applicationset-application-infrastructure.yaml gitops-bootstrap/argocd/
+>
+> # Commit and push so ArgoCD reconciles
+> user@host idp-tutorial> $ git add gitops-bootstrap/argocd/applicationset-application-infrastructure.yaml
+> user@host idp-tutorial> $ git commit -m "gitops: add application infrastructure ApplicationSet"
+> user@host idp-tutorial> $ git push
+> ```
 
 ### Application Infrastructure Example
 ```yaml

@@ -1,0 +1,40 @@
+# File: exercises/security/chainguard-images/kyverno-installation.yaml
+# Description: ArgoCD Application to install Kyverno policy engine
+# Tutorial Reference: docs/security/01-chainguard-images.md
+# Prerequisites: ArgoCD installed
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kyverno
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://kyverno.github.io/kyverno/
+    targetRevision: 3.0.0
+    chart: kyverno
+    helm:
+      values: |
+        admissionController:
+          replicas: 2
+        backgroundController:
+          enabled: true
+        cleanupController:
+          enabled: true
+        reportsController:
+          enabled: true
+        crds:
+          install: true
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kyverno
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true

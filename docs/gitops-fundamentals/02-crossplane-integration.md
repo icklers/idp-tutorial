@@ -31,6 +31,21 @@ Let's trace the end-to-end reconciliation loop:
           name: azure-postgresql-server
     ```
 
+  > 📁 **Exercise Files**: Available at [`exercises/gitops-fundamentals/crossplane-integration/xpostgresqlinstance-dev.yaml`](../../exercises/gitops-fundamentals/crossplane-integration/xpostgresqlinstance-dev.yaml)
+  > 
+  > ```bash
+  > # Copy into the dev environment infrastructure path (GitOps-managed)
+  > user@host idp-tutorial> $ cp exercises/gitops-fundamentals/crossplane-integration/xpostgresqlinstance-dev.yaml exercises/crossplane-advanced-patterns-01/environments/dev/infrastructure/
+  > 
+  > # Commit on a feature branch and open a PR
+  > user@host idp-tutorial> $ git switch -c feat/dev-db-example
+  > user@host idp-tutorial> $ git add exercises/crossplane-advanced-patterns-01/environments/dev/infrastructure/xpostgresqlinstance-dev.yaml
+  > user@host idp-tutorial> $ git commit -m "gitops: add xpostgresqlinstance for dev (integration example)"
+  > user@host idp-tutorial> $ git push -u origin $(git branch --show-current)
+  > user@host idp-tutorial> $ gh pr create --title "Add dev XPostgreSQLInstance example" --body "Adds integration example CR for dev"
+  > user@host idp-tutorial> $ gh pr merge --auto --squash --delete-branch
+  > ```
+
 2.  **ArgoCD syncs the repository.** It sees the new `XPostgreSQLInstance` Composite Resource and applies it to the Kubernetes cluster using `kubectl apply`.
 
 3.  **Crossplane's Composition Controller wakes up.** It sees a new `XPostgreSQLInstance` Composite Resource and identifies the associated Composition.

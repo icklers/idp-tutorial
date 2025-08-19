@@ -1,0 +1,23 @@
+# File: exercises/gitops-fundamentals/workflow-patterns/argocd-app-infrastructure-dev.yaml
+# Description: ArgoCD Application for deploying the dev environment infrastructure
+# Tutorial Reference: docs/gitops-fundamentals/03-workflow-patterns.md
+# Prerequisites: ArgoCD installed and configured; repo URL updated to your organization
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: infrastructure-dev
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/your-org/infrastructure-gitops.git
+    targetRevision: HEAD
+    path: environments/dev
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: dev
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

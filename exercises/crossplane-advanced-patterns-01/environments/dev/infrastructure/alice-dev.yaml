@@ -1,0 +1,24 @@
+apiVersion: platform.tutorial.com/v1alpha1
+kind: XDevEnvironment
+metadata:
+  name: alice-dev
+  namespace: dev
+  labels:
+    app: crossplane-tutorial
+    owner: alice
+    team: platform
+    environment: dev
+spec:
+  parameters:
+    name: alice-dev
+    region: eastus
+    resourceGroupLocation: "East US"
+    tags:
+      owner: alice
+      team: platform
+      cost-center: "1234"
+      purpose: development
+      environment: dev
+  crossplane:
+    compositionRef:
+      name: dev-environment-azure

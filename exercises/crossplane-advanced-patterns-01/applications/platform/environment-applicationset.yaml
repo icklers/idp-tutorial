@@ -1,0 +1,56 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: crossplane-environments
+  namespace: argocd
+  labels:
+    app: crossplane-tutorial
+    component: environment-management
+spec:
+  generators:
+  - matrix:
+      generators:
+      - git:
+          repoURL: https://github.com/your-username/your-tutorial-repo.git
+          revision: HEAD
+          directories:
+          - path: environments/*
+      - list:
+          elements:
+          - cluster: https://kubernetes.default.svc
+            server: in-cluster
+  template:
+    metadata:
+      name: 'crossplane-{{path.basename}}'
+      labels:
+        app: crossplane-tutorial
+        environment: '{{path.basename}}'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/your-username/your-tutorial-repo.git
+        targetRevision: HEAD
+        path: '{{path}}/infrastructure'
+      destination:
+        server: '{{cluster}}'
+        namespace: '{{path.basename}}'  # Deploy to environment-specific namespace
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+          - ApplyOutOfSyncOnly=true
+        # Environment-specific sync policies
+        retry:
+          limit: 3
+          backoff:
+            duration: 5s
+            maxDuration: 3m0s
+      # Crossplane-specific health checks
+      ignoreDifferences:
+      - group: platform.tutorial.com
+        kind: XDevEnvironment
+        jsonPointers:
+        - /metadata/generation
+        - /status

@@ -1,0 +1,18 @@
+# File: exercises/crossplane-fundamentals/azure-provider/azure-provider-config.yaml
+# Description: ProviderConfig for Azure authentication
+# Tutorial Reference: docs/crossplane-fundamentals/01-azure-provider-setup.md
+# Prerequisites: Azure provider installed, azure-secret exists in crossplane-system namespace
+
+apiVersion: azure.upbound.io/v1beta1
+kind: ProviderConfig
+metadata:
+  name: default
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  credentials:
+    source: Secret
+    secretRef:
+      namespace: crossplane-system
+      name: azure-secret
+      key: creds

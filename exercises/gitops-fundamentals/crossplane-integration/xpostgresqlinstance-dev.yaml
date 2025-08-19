@@ -1,0 +1,16 @@
+# File: exercises/gitops-fundamentals/crossplane-integration/xpostgresqlinstance-dev.yaml
+# Description: Example Composite Resource for a PostgreSQL instance used in Crossplane + ArgoCD integration
+# Tutorial Reference: docs/gitops-fundamentals/02-crossplane-integration.md
+# Prerequisites: Crossplane installed; provider and Composition 'azure-postgresql-server' available; namespace 'default' exists
+
+apiVersion: database.example.org/v1alpha1
+kind: XPostgreSQLInstance
+metadata:
+  name: my-app-db
+  namespace: default
+spec:
+  parameters:
+    storageGB: 20
+  crossplane:
+    compositionRef:
+      name: azure-postgresql-server

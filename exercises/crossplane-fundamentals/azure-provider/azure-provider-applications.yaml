@@ -1,0 +1,52 @@
+# File: exercises/crossplane-fundamentals/azure-provider/azure-provider-applications.yaml
+# Description: ArgoCD Applications to deploy Azure provider and configuration
+# Tutorial Reference: docs/crossplane-fundamentals/01-azure-provider-setup.md
+# Prerequisites: ArgoCD installed, repository URL updated
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: azure-provider
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: __YOUR_PLATFORM_GITOPS_REPO_URL__
+    targetRevision: HEAD
+    path: platform-core/providers
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: crossplane-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: azure-provider-config
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: __YOUR_PLATFORM_GITOPS_REPO_URL__
+    targetRevision: HEAD
+    path: platform-core/provider-configs
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: crossplane-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true

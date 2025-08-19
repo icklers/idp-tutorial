@@ -1,0 +1,57 @@
+# File: exercises/observability/monitoring/prometheus-stack.yaml
+# Description: ArgoCD Application to install kube-prometheus-stack
+# Tutorial Reference: docs/observability/02-monitoring-with-prometheus.md
+# Prerequisites: ArgoCD installed
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prometheus-stack
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://prometheus-community.github.io/helm-charts
+    targetRevision: 56.0.0
+    chart: kube-prometheus-stack
+    helm:
+      values: |
+        grafana:
+          persistence:
+            enabled: true
+            size: 10Gi
+          adminPassword: "admin123"
+          grafana.ini:
+            security:
+              allow_embedding: true
+        prometheus:
+          prometheusSpec:
+            retention: 30d
+            storageSpec:
+              volumeClaimTemplate:
+                spec:
+                  accessModes: ["ReadWriteOnce"]
+                  resources:
+                    requests:
+                      storage: 50Gi
+        alertmanager:
+          alertmanagerSpec:
+            storage:
+              volumeClaimTemplate:
+                spec:
+                  accessModes: ["ReadWriteOnce"]
+                  resources:
+                    requests:
+                      storage: 10Gi
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: monitoring
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true
